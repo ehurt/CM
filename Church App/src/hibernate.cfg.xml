@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+          "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+	
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/cm</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password"></property>
+        <property name="connection.pool_size">1</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+        <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+		<property name="connection.pool_size">1</property>
+	
+		<mapping class="org.church.management.domain.Directory"/>
+		<mapping class="org.church.management.domain.Language"/>
+		<mapping class="org.church.management.domain.User"/>
+		<mapping class="org.church.management.domain.ValidHostAddress"/>
+		<mapping class="org.church.management.domain.Country"/>
+		<mapping class="org.church.management.domain.State"/>
+		<mapping class="org.church.management.domain.City"/>
+		<mapping class="org.church.management.domain.Address"/>
+		<mapping class="org.church.management.domain.ApplicationFile"/>
+		
+	
+	</session-factory>
+</hibernate-configuration>
