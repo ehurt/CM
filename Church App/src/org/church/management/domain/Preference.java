@@ -1,14 +1,24 @@
 package org.church.management.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="preferences")
 public class Preference implements org.church.management.interfaces.entity.Entity
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name="name", unique=true, length=40)
 	private String name;
+	
+	@Column(name="default_value", length=100)
 	private String defaultValue;
 	
 	public Preference()
@@ -40,27 +50,21 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 		this.defaultValue = defaultValue;
 	}
 
-	@Override
-	public int getEntityTypeVersion() {
-		// TODO Auto-generated method stub
+	public int getEntityTypeVersion() 
+	{
 		return 0;
 	}
 
-	@Override
-	public void setEntityTypeVersion(int version) {
-		// TODO Auto-generated method stub
-		
+	public void setEntityTypeVersion(int version) 
+	{	
 	}
 
-	@Override
-	public String getEntityType() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getEntityType() 
+	{
+		return "";
 	}
 
-	@Override
-	public void setEntityType(String entityType) {
-		// TODO Auto-generated method stub
-		
+	public void setEntityType(String entityType) 
+	{	
 	}
 }
