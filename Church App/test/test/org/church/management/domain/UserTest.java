@@ -33,14 +33,12 @@ public class UserTest extends TestCase
 		user.setEmail("ehurtiii@yahoo.com");
 		user.setFirstName("Trae");
 		user.setLastName("Hurt");
-		user.setTheme("start");
 		user.setQuote("Sleep is good.");
 		
 		user.setFax("123-445-6996");
 		user.setDisabled(false);
 		user.setDeleted(false);
 		user.setResetPassword(false);
-		user.setLanguage(null);
 		
 		LocalTime startOfDay = new LocalTime(8, 30, 0);
 		LocalTime endOfDay = new LocalTime(17, 30, 0);
@@ -83,14 +81,12 @@ public class UserTest extends TestCase
 		user.setEmail("ehurtiii@yahoo.com");
 		user.setFirstName("Trae");
 		user.setLastName("Hurt");
-		user.setTheme("start");
 		user.setQuote("Sleep is good.");
 		
 		user.setFax("123-445-6996");
 		user.setDisabled(false);
 		user.setDeleted(false);
 		user.setResetPassword(false);
-		user.setLanguage(null);
 		
 		LocalTime startOfDay = new LocalTime(8, 30, 0);
 		LocalTime endOfDay = new LocalTime(17, 30, 0);
@@ -138,14 +134,12 @@ public class UserTest extends TestCase
 		user.setEmail("ehurtiii@yahoo.com");
 		user.setFirstName("Trae");
 		user.setLastName("Hurt");
-		user.setTheme("start");
 		user.setQuote("Sleep is good.");
 		
 		user.setFax("123-445-6996");
 		user.setDisabled(false);
 		user.setDeleted(false);
 		user.setResetPassword(false);
-		user.setLanguage(null);
 		
 		LocalTime startOfDay = new LocalTime(8, 30, 0);
 		LocalTime endOfDay = new LocalTime(17, 30, 0);
@@ -171,14 +165,12 @@ public class UserTest extends TestCase
 		user.setEmail("ehurtiii@yahoo.com");
 		user.setFirstName("Trae");
 		user.setLastName("Hurt");
-		user.setTheme("start");
 		user.setQuote("Sleep is good.");
 		
 		user.setFax("123-445-6996");
 		user.setDisabled(false);
 		user.setDeleted(false);
 		user.setResetPassword(false);
-		user.setLanguage(null);
 		
 		startOfDay = new LocalTime(8, 30, 0);
 		endOfDay = new LocalTime(17, 30, 0);
@@ -204,14 +196,12 @@ public class UserTest extends TestCase
 		user.setEmail("ehurtiii@yahoo.com");
 		user.setFirstName("Trae");
 		user.setLastName("Hurt");
-		user.setTheme("start");
 		user.setQuote("Sleep is good.");
 		
 		user.setFax("123-445-6996");
 		user.setDisabled(false);
 		user.setDeleted(false);
 		user.setResetPassword(false);
-		user.setLanguage(null);
 		
 		startOfDay = new LocalTime(8, 30, 0);
 		endOfDay = new LocalTime(17, 30, 0);
@@ -262,14 +252,12 @@ public class UserTest extends TestCase
 		user.setEmail("ehurtiii@yahoo.com");
 		user.setFirstName("Trae");
 		user.setLastName("Hurt");
-		user.setTheme("start");
 		user.setQuote("Sleep is good.");
 		
 		user.setFax("123-445-6996");
 		user.setDisabled(false);
 		user.setDeleted(false);
 		user.setResetPassword(false);
-		user.setLanguage(null);
 		
 		LocalTime startOfDay = new LocalTime(8, 30, 0);
 		LocalTime endOfDay = new LocalTime(17, 30, 0);
