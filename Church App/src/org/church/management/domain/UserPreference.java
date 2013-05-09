@@ -15,7 +15,7 @@ public class UserPreference
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	private User user;
