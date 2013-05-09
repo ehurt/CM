@@ -30,7 +30,7 @@ public class Language implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name="abbrevation", length=6)
 	private String abbrevation;
@@ -56,12 +56,12 @@ public class Language implements org.church.management.interfaces.entity.Entity
 		this.abbrevation = abbrevation;
 	}
 	
-	public int getId() 
+	public Integer getId() 
 	{
 		return id;
 	}
 	
-	public void setId(int id) 
+	public void setId(Integer id) 
 	{
 		this.id = id;
 	}

@@ -26,7 +26,7 @@ public class City implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name="name", length=30)
 	private String name;
@@ -65,10 +65,10 @@ public class City implements org.church.management.interfaces.entity.Entity
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

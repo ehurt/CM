@@ -25,7 +25,7 @@ public class State implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name="NAME", length=50)
 	private String name;
@@ -38,7 +38,7 @@ public class State implements org.church.management.interfaces.entity.Entity
 
 	public State()
 	{
-		id = 0;
+		id = null;
 		this.name = "";
 		country = null;
 		manager = new StateManager();
@@ -60,11 +60,11 @@ public class State implements org.church.management.interfaces.entity.Entity
 		this.country = country;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

@@ -32,7 +32,7 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id = 0;
+	private Integer id = 0;
 	
 	@Column(name="valid_ip_pattern", length=20)
 	private String pattern;
@@ -51,12 +51,12 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 		manager = new ValidHostAddressManager();
 	}
 	
-	public int getId() 
+	public Integer getId() 
 	{
 		return id;
 	}
 
-	public void setId(int id) 
+	public void setId(Integer id) 
 	{
 		this.id = id;
 	}

@@ -13,7 +13,7 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Column(name="name", unique=true, length=40)
 	private String name;
@@ -26,11 +26,11 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 		
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

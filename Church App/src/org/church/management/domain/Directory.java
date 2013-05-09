@@ -23,7 +23,7 @@ public class Directory implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id = 0;
+	private Integer id = 0;
 	
 	@Column(name="name", length=50)
 	private String name = "";
@@ -43,13 +43,13 @@ public class Directory implements org.church.management.interfaces.entity.Entity
 	}
 	
 	@Override
-	public int getId() 
+	public Integer getId() 
 	{
 		return id;
 	}
 
 	@Override
-	public void setId(int id) 
+	public void setId(Integer id) 
 	{
 		this.id = id;
 	}

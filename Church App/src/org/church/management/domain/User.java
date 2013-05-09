@@ -1,6 +1,7 @@
 package org.church.management.domain;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.Column;
@@ -57,9 +58,6 @@ public class User extends StandardFields implements DomainOperations<User>
 	@Column(name="is_disabled")
 	private boolean isDisabled;
 	
-	@OneToOne(fetch=FetchType.EAGER)
-	private Language language;
-	
 	@Column(name="start_of_day")
 	@Type(type="org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime")
 	private LocalTime startOfDay;
@@ -83,14 +81,13 @@ public class User extends StandardFields implements DomainOperations<User>
 	@ManyToOne(fetch= FetchType.EAGER)
 	private Directory drive;
 	
-	@Column(name="theme", length=30)
-	private String theme;
-	
 	@Column(name="reset_password")
 	private boolean resetPassword;
 	
 	@Column(name="quote", length=300)
 	private String quote;
+	
+	private Map<String, UserPreference> preferences;
 	
 	@Transient
 	private UserManager manager = null;
@@ -217,14 +214,6 @@ public class User extends StandardFields implements DomainOperations<User>
 		return endTime;
 	}
 
-	public void setLanguage(Language language) {
-		this.language = language;
-	}
-
-	public Language getLanguage() {
-		return language;
-	}
-
 	public String getQuote() {
 		return quote;
 	}
@@ -251,16 +240,6 @@ public class User extends StandardFields implements DomainOperations<User>
 	public Directory getDrive() 
 	{
 		return drive;
-	}
-
-	public String getTheme()
-	{
-		return theme;
-	}
-
-	public void setTheme(String theme) 
-	{
-		this.theme = theme;
 	}
 
 	@Override
@@ -400,5 +379,20 @@ public class User extends StandardFields implements DomainOperations<User>
 	public List<ValidHostAddress> getValidHostAddressForUser() throws DAOException
 	{
 		return hostManager.getAllValidHostAddressByReference(this.getEntityType(), getId()+"");
+	}
+
+	public Map<String, UserPreference> getPreferences() 
+	{
+		return preferences;
+	}
+
+	public void setPreferences(Map<String, UserPreference> preferences) 
+	{
+		this.preferences = preferences;
+	}
+	
+	public UserPreference getUserPreference(String preference)
+	{
+		return preferences.get(preference);
 	}
 }

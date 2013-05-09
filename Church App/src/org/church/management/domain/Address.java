@@ -35,7 +35,7 @@ public class Address implements Entity, DomainOperations<Address>
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
 	@Transient
 	private String entityType;
@@ -65,12 +65,12 @@ public class Address implements Entity, DomainOperations<Address>
 	}
 	
 	@Override
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

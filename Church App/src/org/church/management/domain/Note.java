@@ -7,18 +7,18 @@ import javax.persistence.Table;
 @Table(name="notes")
 public class Note implements org.church.management.interfaces.entity.Entity
 {
-	private int id;
+	private Integer id;
 	
 	
 	
 	@Override
-	public int getId() 
+	public Integer getId() 
 	{
 		return id;
 	}
 
 	@Override
-	public void setId(int id) 
+	public void setId(Integer id) 
 	{
 		this.id = id;
 	}
