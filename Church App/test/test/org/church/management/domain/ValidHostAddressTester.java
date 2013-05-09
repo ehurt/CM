@@ -2,6 +2,7 @@ package test.org.church.management.domain;
 
 import junit.framework.Assert;
 
+import org.church.management.domain.User;
 import org.church.management.domain.ValidHostAddress;
 import org.church.management.domain.exceptions.DAOConstraintViolationException;
 import org.church.management.domain.exceptions.DAOException;
@@ -9,8 +10,6 @@ import org.church.management.domain.exceptions.DAONoObjectFoundException;
 import org.church.management.domain.exceptions.DAOStaleStateException;
 import org.church.management.record.locking.exception.LockException;
 import org.junit.Test;
-
-import com.sun.tools.xjc.reader.xmlschema.bindinfo.BIConversion.User;
 
 public class ValidHostAddressTester 
 {
