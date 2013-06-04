@@ -37,6 +37,18 @@ public class EntityType {
 	@Column(name="entity_type_full_class")
 	private String entityTypeFullClassName;
 	
+	@Column(name="has_tasks")
+	private boolean hasTasks;
+	
+	@Column(name="has_notes")
+	private boolean hasNotes;
+
+	@Column(name="hasAttachedFiles")
+	private boolean hasAttachedFiles;
+	
+	@Column(name="hasActivaties")
+	private boolean hasActivaties;
+	
 	public EntityType(Class c, boolean auditable, int version, int numberOfCustomFields){
 		this.entityTypeFullClassName = c.getName();
 		this.name = c.getSimpleName();
@@ -95,5 +107,41 @@ public class EntityType {
 
 	public String getEntityTypeFullClass() {
 		return entityTypeFullClassName;
+	}
+	
+	public boolean getHasTasks(){
+		return this.hasTasks;
+	}
+	
+	public void setHashTasks(boolean tasks){
+		this.hasTasks = tasks;
+	}
+	
+	public boolean isHasNotes() {
+		return hasNotes;
+	}
+
+	public void setHasNotes(boolean hasNotes) {
+		this.hasNotes = hasNotes;
+	}
+
+	public boolean isHasAttachedFiles() {
+		return hasAttachedFiles;
+	}
+
+	public void setHasAttachedFiles(boolean hasAttachedFiles) {
+		this.hasAttachedFiles = hasAttachedFiles;
+	}
+
+	public boolean isHasActivaties() {
+		return hasActivaties;
+	}
+
+	public void setHasActivaties(boolean hasActivaties) {
+		this.hasActivaties = hasActivaties;
+	}
+
+	public void setHasTasks(boolean hasTasks) {
+		this.hasTasks = hasTasks;
 	}
 }

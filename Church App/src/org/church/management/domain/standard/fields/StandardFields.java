@@ -32,58 +32,59 @@ public class StandardFields implements Entity, Serializable {
 	//the primary key
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	protected Integer id;
 	
 	//when was the object created
 	@Column(name="created_on")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar createdOn;
+	protected Calendar createdOn;
 	
 	//who created the record
 	@OneToOne
-	private User createdBy;
+	protected User createdBy;
 	
 	//when was the last time the object was modified
 	@Column(name="last_modified_on")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar lastModifiedOn;
+	protected Calendar lastModifiedOn;
 	
 	//who modified the record last
 	@OneToOne
-	private User lastModifiedBy;
+	protected User lastModifiedBy;
 	
 	//the last time the record was looked at
 	@Column(name="last_viewed_on")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar lastViewedOn;
+	protected Calendar lastViewedOn;
 	
 	//who looked at the last object
 	@OneToOne
-	private User lastViewedBy;
+	protected User lastViewedBy;
 	
 	@Column(name="name", length=100)
-	private String name;
+	protected String name;
 	
 	//who owners the record
 	@OneToOne
-	private User owner;
+	protected User owner;
 	
 	//Keep track of which version this entity type is.
 	@Column(name="entity_type_version", nullable=true)
-	private int entityTypeVersion;
+	protected int entityTypeVersion;
 	
 	@Transient
-	private String entityType;
+	protected String entityType;
 	
+	@SuppressWarnings("rawtypes")
 	public StandardFields(Class entity){
 		this.entityType = entity.getSimpleName();
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
