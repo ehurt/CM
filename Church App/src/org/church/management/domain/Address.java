@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @javax.persistence.Entity
 @Table(name="addresses")
-public class Address
+public class Address implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -165,5 +165,17 @@ public class Address
 		}
 		
 		return false;
+	}
+
+	@Override
+	public String getEntityType() 
+	{
+		return Address.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{
+		
 	}
 }

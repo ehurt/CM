@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @javax.persistence.Entity
 @Table(name="valid_host_addresses")
-public class ValidHostAddress
+public class ValidHostAddress implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,5 +118,16 @@ public class ValidHostAddress
 		}
 		
 		return false;
+	}
+
+	@Override
+	public String getEntityType() 
+	{
+		return ValidHostAddress.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{		
 	}
 }

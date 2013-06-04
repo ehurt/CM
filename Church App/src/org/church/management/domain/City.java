@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="cities")
-public class City
+public class City implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,5 +127,15 @@ public class City
 		
 		return city;
 	}
-	
+
+	@Override
+	public String getEntityType() 
+	{
+		return City.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{	
+	}
 }

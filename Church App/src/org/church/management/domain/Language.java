@@ -18,7 +18,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="languages")
-public class Language
+public class Language implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -103,5 +103,16 @@ public class Language
 		}
 		
 		return false;
+	}
+
+	@Override
+	public String getEntityType() 
+	{
+		return Language.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{	
 	}
 }

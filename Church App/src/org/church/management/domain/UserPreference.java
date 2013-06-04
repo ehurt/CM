@@ -15,7 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="user_preferences")
-public class UserPreference implements Serializable
+public class UserPreference implements Serializable, org.church.management.interfaces.entity.Entity
 {
 	private static final long serialVersionUID = 1L;
 
@@ -99,5 +99,28 @@ public class UserPreference implements Serializable
 		userPreference.setPreference(preference);
 		
 		return userPreference;
+	}
+
+	@Override
+	public Integer getId() 
+	{
+		return id;
+	}
+
+	@Override
+	public void setId(Integer id) 
+	{
+		this.id = id;
+	}
+
+	@Override
+	public String getEntityType()
+	{
+		return UserPreference.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{
 	}
 }

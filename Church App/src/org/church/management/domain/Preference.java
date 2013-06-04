@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="preferences")
-public class Preference
+public class Preference implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,5 +90,16 @@ public class Preference
 		preference.setDefaultValue(defaultValue);
 		
 		return preference;
+	}
+
+	@Override
+	public String getEntityType() 
+	{
+		return Preference.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{	
 	}
 }

@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="states")
-public class State
+public class State implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -93,5 +93,16 @@ public class State
 		}
 		
 		return false;
+	}
+
+	@Override
+	public String getEntityType() 
+	{
+		return State.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType)
+	{	
 	}
 }

@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 
 import org.church.management.domain.User;
 import org.church.management.interfaces.entity.Entity;
+import org.church.management.interfaces.entity.VersionedEntity;
 
 /**
  * 
@@ -25,7 +26,7 @@ import org.church.management.interfaces.entity.Entity;
  */
 
 @MappedSuperclass
-public class StandardFields implements Entity, Serializable {
+public class StandardFields implements VersionedEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
 	

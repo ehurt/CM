@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="directories")
-public class Directory
+public class Directory implements org.church.management.interfaces.entity.Entity
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -111,5 +111,15 @@ public class Directory
 		
 		return false;
 	}
-	
+
+	@Override
+	public String getEntityType() 
+	{
+		return Directory.class.getName();
+	}
+
+	@Override
+	public void setEntityType(String entityType) 
+	{
+	}
 }
