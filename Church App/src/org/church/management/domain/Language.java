@@ -1,21 +1,13 @@
 package org.church.management.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.LanguageManager;
-import org.church.management.record.locking.exception.LockException;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * 
@@ -26,24 +18,22 @@ import org.church.management.record.locking.exception.LockException;
  */
 @Entity
 @Table(name="languages")
-public class Language implements org.church.management.interfaces.entity.Entity
+public class Language
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="abbrevation", length=6)
+	@Column(name="abbrevation", length=6, unique=true)
 	private String abbrevation;
 	
 	@Column(name="name", length=50)
 	private String name;
 	
-	@Transient
-	private LanguageManager manager;
-	
 	public Language()
 	{
-		manager = new LanguageManager();
+		this.name = "";
+		this.abbrevation = "";
 	}
 	
 	public String getAbbrevation()
@@ -76,41 +66,42 @@ public class Language implements org.church.management.interfaces.entity.Entity
 		this.name = name;
 	}
 	
-	public int getEntityTypeVersion() 
+	public int hashCode()
 	{
-		return 0;
-	}
-
-	public void setEntityTypeVersion(int version) 
-	{
+		return new HashCodeBuilder().append(name).append(abbrevation).toHashCode();
 	}
 	
-	public String getEntityType()
+	public Language clone()
 	{
-		return null;
+		Language language = new Language();
+		language.setName(name);
+		language.setAbbrevation(abbrevation);
+		
+		return language;
 	}
 	
-	public void setEntityType(String entityType) 
-	{	
-	}
-	
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException
+	public boolean equals(Object obj)
 	{
-		manager.save(this);
-	}
-	
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException
-	{
-		manager.delete(this);
-	}
-	
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException
-	{
-		manager.update(this);
-	}
-	
-	public List<Language> getAll() throws DAOException
-	{
-		return manager.getAll();
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof Language)
+		{
+			Language language = (Language) obj;
+			
+			if(language == this)
+			{
+				return true;
+			}
+			
+			if(language.getName().equals(name) && language.getAbbrevation().equals(abbrevation))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

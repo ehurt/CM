@@ -1,6 +1,5 @@
 package org.church.management.domain;
 
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,19 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.CityManager;
-import org.church.management.record.locking.exception.LockException;
-
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="cities")
-public class City implements org.church.management.interfaces.entity.Entity
+public class City
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +29,10 @@ public class City implements org.church.management.interfaces.entity.Entity
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Country country;
 	
-	@Transient
-	private CityManager manager = null;
-	
 	public City()
 	{
 		id = 0;
 		name = "";
-		manager = new CityManager();
 	}
 	
 	public Country getCountry() {
@@ -71,40 +59,73 @@ public class City implements org.church.management.interfaces.entity.Entity
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	@Override
-	public int getEntityTypeVersion() {
-		return 0;
-	}
-
-	@Override
-	public void setEntityTypeVersion(int version) {}
-
-	@Override
-	public String getEntityType() {
-		return null;
-	}
-
-	@Override
-	public void setEntityType(String entityType) {}
 	
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException
+	public int hashCode()
 	{
-		manager.save(this);
+		HashCodeBuilder builder = new HashCodeBuilder();
+		
+		builder.append(name);
+		
+		if(state != null)
+		{
+			builder.append(state);
+		}
+		
+		else if(country != null)
+		{
+			builder.append(country);
+		}
+		
+		return builder.toHashCode();
 	}
 	
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException
+	public boolean equals(Object obj)
 	{
-		manager.delete(this);
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else
+		{
+			if(obj instanceof City)
+			{
+				City city = (City) obj;
+				
+				if(city == this)
+				{
+					return true;
+				}
+				
+				if(state != null)
+				{
+					if(state.equals(city.getState()) && name.equals(city.getName()))
+					{
+						return true;
+					}
+				}
+				
+				if(country != null)
+				{
+					if(country.equals(city.getCountry()) && name.equals(city.getName()))
+					{
+						return true;
+					}
+				}
+			}
+		}
+		
+		return false;
 	}
 	
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException
+	public City clone()
 	{
-		manager.update(this);
+		City city = new City();
+		city.setName(name);
+		city.setState(state);
+		city.setCountry(country);
+		
+		return city;
 	}
 	
-	public List<City> getAll() throws DAOException
-	{
-		return manager.getAll();
-	}
 }

@@ -1,7 +1,5 @@
 package org.church.management.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,17 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.church.management.domain.crud.DomainOperations;
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.AddressManager;
-import org.church.management.interfaces.entity.Entity;
-import org.church.management.record.locking.exception.LockException;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * 
@@ -31,14 +20,11 @@ import org.church.management.record.locking.exception.LockException;
 
 @javax.persistence.Entity
 @Table(name="addresses")
-public class Address implements Entity, DomainOperations<Address>
+public class Address
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Transient
-	private String entityType;
 	
 	@Column(name="address", length=100)
 	private String address;
@@ -46,7 +32,7 @@ public class Address implements Entity, DomainOperations<Address>
 	@ManyToOne(fetch=FetchType.EAGER)
 	private City city;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER, optional=true)
 	private State state;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
@@ -55,125 +41,17 @@ public class Address implements Entity, DomainOperations<Address>
 	@Column(name="zipcode", length=12)
 	private String zipcode;
 	
-	@Transient
-	private AddressManager manager = null;
-	
 	public Address()
 	{
-		entityType = Address.class.getSimpleName();
-		manager = new AddressManager();
+
 	}
 	
-	@Override
 	public Integer getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Override
-	public int getEntityTypeVersion() {
-		return 0;
-	}
-
-	@Override
-	public void setEntityTypeVersion(int version) {
-	}
-
-	@Override
-	public String getEntityType() {
-		return entityType;
-	}
-
-	@Override
-	public void setEntityType(String entityType) {
-		this.entityType = entityType;
-	}
-
-	@Override
-	public int compareTo(Address arg0) 
-	{
-		return 0;
-	}
-
-	@Override
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException 
-	{
-		manager.save(this);	
-	}
-
-	@Override
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException 
-	{
-		manager.delete(this);	
-	}
-
-	@Override
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException 
-	{
-		manager.update(this);	
-	}
-
-	@Override
-	public boolean exist() throws DAOException 
-	{
-		return manager.exists(getId());
-	}
-
-	@Override
-	public Integer rowCount() throws DAOException
-	{
-		return manager.rowCount();
-	}
-
-	@Override
-	public void retrieve() throws DAOException, DAONoObjectFoundException 
-	{
-		Address address = manager.getObject(getId());
-		copy(address, this);
-	}
-
-	@Override
-	public List<Address> findAll() throws DAOException 
-	{
-		return manager.getAll();
-	}
-
-	@Override
-	public Address getFirstRecord() throws DAOException 
-	{
-		return manager.getFirstRecord();
-	}
-
-	@Override
-	public void lock(String sessionId, String username) throws LockException 
-	{
-		manager.lock(this, sessionId, username);	
-	}
-
-	@Override
-	public void unlock() 
-	{
-		manager.unlock(this);
-	}
-
-	@Override
-	public void copy(Address source, Address target) {
-		try
-		{
-			PropertyUtils.copyProperties(target, source);
-		}
-		catch(Exception e){}
-	}
-	
-	public Address clone()
-	{
-		Address address = new Address();
-		copy(this, address);
-		return address;
 	}
 
 	public String getAddress() {
@@ -216,4 +94,76 @@ public class Address implements Entity, DomainOperations<Address>
 		this.zipcode = zipcode;
 	}
 
+	public int hashCode()
+	{
+		HashCodeBuilder builder = new HashCodeBuilder();
+		
+		builder.append(address);
+		builder.append(zipcode);
+		
+		if(city != null)
+		{
+			builder.append(city);
+		}
+
+		if(state != null)
+		{
+			builder.append(state);
+		}
+		
+		if(country != null)
+		{
+			builder.append(country);
+		}
+		
+		return builder.toHashCode();
+	}
+	
+	public Address clone()
+	{
+		Address address = new Address();
+		
+		address.setAddress(this.address);
+		address.setCity(city);
+		address.setCountry(country);
+		address.setState(state);
+		address.setZipcode(zipcode);
+		return address;
+	}
+	
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof Address)
+		{
+			Address address = (Address) obj;
+			
+			if(address == this)
+			{
+				return true;
+			}
+			
+			if(state != null)
+			{
+				if(state.equals(address.getState()) && zipcode.equals(address.getZipcode()) && city.equals(address.getCity()) && this.address.equals(address.getAddress()))
+				{
+					return true;
+				}
+			}
+			
+			if(country != null)
+			{
+				if(country.equals(address.getCountry()) && zipcode.equals(address.getZipcode()) && city.equals(address.getCity()) && this.address.equals(address.getAddress()))
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 }

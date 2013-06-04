@@ -1,25 +1,17 @@
 package org.church.management.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.DirectoryManager;
-import org.church.management.record.locking.exception.LockException;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="directories")
-public class Directory implements org.church.management.interfaces.entity.Entity
+public class Directory
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,22 +25,18 @@ public class Directory implements org.church.management.interfaces.entity.Entity
 	
 	@Column(name="is_public")
 	private boolean publicDirectory;
-	
-	@Transient
-	private DirectoryManager manager = null;
 
 	public Directory()
 	{
-		manager = new DirectoryManager();
+		this.name = "";
+		this.path = "";
 	}
 	
-	@Override
 	public Integer getId() 
 	{
 		return id;
 	}
 
-	@Override
 	public void setId(Integer id) 
 	{
 		this.id = id;
@@ -84,45 +72,44 @@ public class Directory implements org.church.management.interfaces.entity.Entity
 		this.publicDirectory = publicDirectory;
 	}
 	
-	@Override
-	public int getEntityTypeVersion() 
+	public int hashCode()
 	{
-		return 0;
-	}
-
-	@Override
-	public void setEntityTypeVersion(int version) 
-	{		
-	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return Directory.class.getSimpleName();
-	}
-
-	@Override
-	public void setEntityType(String entityType)
-	{	
-	}
-
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException
-	{
-		manager.save(this);
+		return new HashCodeBuilder().append(name).append(path).append(publicDirectory).toHashCode();
 	}
 	
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException
+	public Directory clone()
 	{
-		manager.delete(this);
+		Directory directory = new Directory();
+		directory.setName(name);
+		directory.setPath(path);
+		directory.setPublicDirectory(publicDirectory);
+		
+		return directory;
 	}
 	
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException
+	public boolean equals(Object obj)
 	{
-		manager.update(this);
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof Directory)
+		{
+			Directory directory = (Directory) obj;
+			
+			if(directory == this)
+			{
+				return true;
+			}
+			
+			if(name.equals(directory.getName()) && path.equals(directory.getPath()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
-	public List<ApplicationFile> getFilesFromDirectory() throws DAOException
-	{
-		return manager.getFilesFromDirectory(this);
-	}
 }

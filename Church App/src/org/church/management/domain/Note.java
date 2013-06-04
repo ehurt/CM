@@ -5,40 +5,78 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="notes")
-public class Note implements org.church.management.interfaces.entity.Entity
+public class Note
 {
 	private Integer id;
 	
+	private String entity;
 	
+	private String objectId;
 	
-	@Override
+	private String title;
+	
+	private String body;
+	
+	private boolean isPrivate;
+	
+	private User owner;
+	
 	public Integer getId() 
 	{
 		return id;
 	}
-
-	@Override
+	
 	public void setId(Integer id) 
 	{
 		this.id = id;
 	}
 
-	public int getEntityTypeVersion()
-	{
-		return 0;
+	public String getBody() {
+		return body;
 	}
 
-	public void setEntityTypeVersion(int version) 
-	{	
+	public void setBody(String body) {
+		this.body = body;
 	}
 
-	public String getEntityType()
-	{
-		return Note.class.getSimpleName();
+	public String getTitle() {
+		return title;
 	}
 
-	public void setEntityType(String entityType) 
-	{	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+
+	public String getObjectId() {
+		return objectId;
+	}
+
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
+	}
+
+	public String getEntity() {
+		return entity;
+	}
+
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 }

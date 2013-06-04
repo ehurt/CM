@@ -1,24 +1,13 @@
 package org.church.management.domain;
 
-
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.church.management.domain.crud.DomainOperations;
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.ApplicationFileManager;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.church.management.domain.standard.fields.StandardFields;
-import org.church.management.record.locking.exception.LockException;
 
 /**
  * 
@@ -30,7 +19,7 @@ import org.church.management.record.locking.exception.LockException;
 
 @Entity
 @Table(name="files")
-public class ApplicationFile extends StandardFields implements DomainOperations<ApplicationFile>
+public class ApplicationFile extends StandardFields
 {
 
 	private static final long serialVersionUID = 1L;
@@ -64,26 +53,11 @@ public class ApplicationFile extends StandardFields implements DomainOperations<
 	
 	@Column(name="new_file_name", length=50)
 	private String newFileName;
-	
-	@Transient
-	private ApplicationFileManager manager;
+
 	
 	public ApplicationFile()
 	{
 		super(ApplicationFile.class);
-		manager = new ApplicationFileManager();
-	}
-	
-	@Override
-	public void lock(String sessionId, String username) throws LockException 
-	{
-		manager.lock(this, sessionId, username);	
-	}
-
-	@Override
-	public void unlock() 
-	{
-		manager.unlock(this);
 	}
 	
 	public String getMineType() {
@@ -150,87 +124,55 @@ public class ApplicationFile extends StandardFields implements DomainOperations<
 	public void setNewFileName(String newFileName) {
 		this.newFileName = newFileName;
 	}
-
-	@Override
-	public int compareTo(ApplicationFile o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException 
-	{
-		manager.save(this);	
-	}
-
-	@Override
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException 
-	{
-		manager.delete(this);	
-	}
-
-	@Override
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException 
-	{
-		manager.update(this);
-	}
-
-	@Override
-	public boolean exist() throws DAOException 
-	{
-		return manager.exists(getId());
-	}
-
-	@Override
-	public Integer rowCount() throws DAOException 
-	{
-		return manager.rowCount();
-	}
-
-	@Override
-	public void retrieve() throws DAOException, DAONoObjectFoundException 
-	{
-		ApplicationFile file = manager.getObject(getId());
-		copy(file, this);
-	}
-
-	@Override
-	public List<ApplicationFile> findAll() throws DAOException 
-	{
-		return manager.getAll();
-	}
-
-	@Override
-	public ApplicationFile getFirstRecord() throws DAOException 
-	{
-		return manager.getFirstRecord();
-	}
-	
-	public List<ApplicationFile> getFilesByReference(org.church.management.interfaces.entity.Entity entity) throws DAOException
-	{
-		String id = entity.getId()+"";
-		String name = entity.getClass().getSimpleName();
-		return manager.getFilesByReference(name, id);
-	}
-
-	@Override
-	public void copy(ApplicationFile source, ApplicationFile target) 
-	{
-		try
-		{
-			PropertyUtils.copyProperties(target, source);
-		}
-		catch(Exception e)
-		{
-			
-		}
-	}
 	
 	public ApplicationFile clone()
 	{
 		ApplicationFile file = new ApplicationFile();
-		copy(this, file);
+		file.setMineType(mineType);
+		file.setEntity(entity);
+		file.setObjectId(objectId);
+		file.setDirectory(directory);
+		file.setDescription(description);
+		file.setOriginalFileName(originalFileName);
+		
 		return file;
+	}
+	
+	public int hashCode()
+	{
+		HashCodeBuilder builder = new HashCodeBuilder();
+		
+		builder.append(mineType);
+		builder.append(entity);
+		builder.append(objectId);
+		builder.append(description);
+		builder.append(originalFileName);
+		
+		return builder.toHashCode();
+	}
+	
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof ApplicationFile)
+		{
+			ApplicationFile file = (ApplicationFile) obj;
+			
+			if(file == this)
+			{
+				return true;
+			}
+			
+			if(directory.equals(file.getDirectory()) && name.equals(file.getName()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -1,7 +1,5 @@
 package org.church.management.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,18 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.StateManager;
-import org.church.management.record.locking.exception.LockException;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="states")
-public class State implements org.church.management.interfaces.entity.Entity
+public class State
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,16 +24,12 @@ public class State implements org.church.management.interfaces.entity.Entity
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	private Country country;
-	
-	@Transient
-	private StateManager manager;
 
 	public State()
 	{
 		id = null;
 		this.name = "";
 		country = null;
-		manager = new StateManager();
 	}
 	
 	public String getName() {
@@ -68,44 +56,42 @@ public class State implements org.church.management.interfaces.entity.Entity
 		this.id = id;
 	}
 
-	@Override
-	public int getEntityTypeVersion() {
-		return 0;
-	}
-
-	@Override
-	public void setEntityTypeVersion(int version) {}
-
-	@Override
-	public String getEntityType() {
-		return "";
-	}
-
-	@Override
-	public void setEntityType(String entityType) {}
-	
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException
+	public int hashCode()
 	{
-		manager.save(this);
+		return new HashCodeBuilder().append(name).append(country).toHashCode();
 	}
 	
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException
+	public State clone()
 	{
-		manager.update(this);
+		State state = new State();
+		state.setName(name);
+		state.setCountry(country);
+		
+		return state;
 	}
 	
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException
+	public boolean equals(Object obj)
 	{
-		manager.delete(this);
-	}
-	
-	public List<State> getAll() throws DAOException
-	{
-		return manager.getAll();
-	}
-	
-	public List<City> getAllCitiesByState() throws DAOException
-	{
-		return manager.getAllCitiesByState(this);
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof State)
+		{
+			State state = (State) obj;
+			
+			if(state == this)
+			{
+				return true;
+			}
+			
+			if(name.equals(state.getName()) && country.equals(state.getCountry()))
+			{
+				return true;
+			}		
+		}
+		
+		return false;
 	}
 }

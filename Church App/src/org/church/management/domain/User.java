@@ -1,33 +1,29 @@
 package org.church.management.domain;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.church.management.domain.crud.DomainOperations;
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.UserManager;
 import org.church.management.domain.manager.ValidHostAddressManager;
 import org.church.management.domain.standard.fields.StandardFields;
-import org.church.management.record.locking.exception.LockException;
 import org.joda.time.LocalTime;
 
 @Entity
 @Table(name="users")
-public class User extends StandardFields implements DomainOperations<User>
+public class User extends StandardFields
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -58,10 +54,12 @@ public class User extends StandardFields implements DomainOperations<User>
 	@Column(name="is_disabled")
 	private boolean isDisabled;
 	
+	//This field is for information for managers.(Good for scheduling)
 	@Column(name="start_of_day")
 	@Type(type="org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime")
 	private LocalTime startOfDay;
 	
+	//This field is for information for managers.(Good for scheduling)
 	@Column(name="end_of_day")
 	@Type(type="org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime")
 	private LocalTime endOfDay;
@@ -87,18 +85,21 @@ public class User extends StandardFields implements DomainOperations<User>
 	@Column(name="quote", length=300)
 	private String quote;
 	
-	private Map<String, UserPreference> preferences;
-	
-	@Transient
-	private UserManager manager = null;
-	@Transient
-	private ValidHostAddressManager hostManager = null;
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,targetEntity=UserPreference.class,orphanRemoval=true)
+	private List<UserPreference> preferences;
 	
 	public User()
 	{
 		super(User.class);
-		manager = new UserManager();
-		hostManager = new ValidHostAddressManager();
+		
+		preferences = new ArrayList<UserPreference>();
+		
+		this.username = "";
+		this.firstName = "";
+		this.lastName = "";
+		this.email = "";
+		this.phone = "";
+		this.isDisabled = false;
 	}
 	
 	public String getUsername() {
@@ -242,114 +243,6 @@ public class User extends StandardFields implements DomainOperations<User>
 		return drive;
 	}
 
-	@Override
-	public void copy(User source, User target) {
-		try
-		{
-			PropertyUtils.copyProperties(target, source);
-		}
-		catch(Exception e){}
-		
-	}
-
-	@Override
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException 
-	{
-		manager.delete(this);	
-	}
-
-	@Override
-	public boolean exist() throws DAOException 
-	{
-		return manager.exists(getId());
-	}
-
-	@Override
-	public List<User> findAll() throws DAOException
-	{
-		return manager.getAll();
-	}
-
-	@Override
-	public User getFirstRecord() throws DAOException 
-	{
-		return manager.getFirstRecord();
-	}
-
-	@Override
-	public void lock(String sessionId, String username) throws LockException {
-		
-		manager.lock(this, sessionId, username);
-	}
-
-	@Override
-	public void retrieve() throws DAOException, DAONoObjectFoundException {
-		User user = manager.getObject(getId());
-		copy(user,this);
-	}
-
-	@Override
-	public Integer rowCount() throws DAOException 
-	{
-		return manager.rowCount();
-	}
-
-	@Override
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException
-	{
-		manager.save(this);
-	}
-
-	public void unlock() 
-	{
-		manager.unlock(this);
-	}
-
-	@Override
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException 
-	{
-		manager.update(this);	
-	}
-	
-	public boolean login() throws DAOException
-	{
-		return manager.login(username, password);
-	}
-	
-	public void getUserByUsername() throws DAOException
-	{
-		User user = manager.getUserByUsername(this.username);
-		copy(user, this);
-	}
-
-	@Override
-	public int compareTo(User user) 
-	{
-		if(user == null)
-		{
-			return -1;
-		}
-		
-		else if(user.getId() == this.getId())
-		{
-			return 0;
-		}
-		
-		else if(user.getId() < this.getId())
-		{
-			return -1;
-		}
-		
-		return 1;
-	}
-	
-	public User clone()
-	{
-		User user = new User();
-		copy(this, user);
-		return user;
-	}
-
 	public boolean isResetPassword() {
 		return resetPassword;
 	}
@@ -357,42 +250,111 @@ public class User extends StandardFields implements DomainOperations<User>
 	public void setResetPassword(boolean resetPassword) {
 		this.resetPassword = resetPassword;
 	}
-	
-	public boolean validLoginTime(LocalTime currentTime){
-		boolean login = false;
-		if(startTime == null || endTime == null){
-			login = true;
-		} else if(currentTime.compareTo(startTime) >= 0 && currentTime.compareTo(endTime) <= 0){
-			login = true;
-		}
-		return login;
-	}
-	
-	/**
-	 * 
-	 * This method will return all the host address that 
-	 * the user can have access from.
-	 * 
-	 * @return
-	 * @throws DAOException
-	 */
-	public List<ValidHostAddress> getValidHostAddressForUser() throws DAOException
-	{
-		return hostManager.getAllValidHostAddressByReference(this.getEntityType(), getId()+"");
-	}
 
-	public Map<String, UserPreference> getPreferences() 
+	public List<UserPreference> getPreferences() 
 	{
 		return preferences;
 	}
 
-	public void setPreferences(Map<String, UserPreference> preferences) 
+	public void setPreferences(List<UserPreference> preferences) 
 	{
 		this.preferences = preferences;
 	}
 	
-	public UserPreference getUserPreference(String preference)
+	public void addPreference(String value, Preference preference)
 	{
-		return preferences.get(preference);
+		UserPreference userPreference = new UserPreference();
+		userPreference.setUser(this);
+		userPreference.setPreference(preference);
+		userPreference.setValue(value);
+		preferences.add(userPreference);
+	}
+	
+	public void removePreference(Preference preference)
+	{
+		Iterator<UserPreference> iterator = preferences.iterator();
+		
+		while(iterator.hasNext())
+		{
+			UserPreference userPreference = iterator.next();
+			
+			if(userPreference.getPreference().equals(preference))
+			{
+				iterator.remove();
+				return;
+			}
+		}
+	}
+	
+	public UserPreference getPreference(String preference)
+	{
+		for(UserPreference userPreference: preferences)
+		{
+			if(userPreference.getPreference().getName().equals(preference))
+			{
+				return userPreference;
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof User)
+		{
+			User user = (User) obj;
+			
+			if(user == this)
+			{
+				return true;
+			}
+			
+			if(user.getUsername().equals(username))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(username).append(firstName).append(lastName).append(email).append(phone).append(cellPhone).append(fax).append(isDisabled).append(name).toHashCode();
+	}
+	
+	public User clone()
+	{
+		User user = new User();
+		user.setCellPhone(cellPhone);
+		user.setDeleted(isDeleted);
+		user.setDisabled(isDisabled);
+		user.setEmail(email);
+		user.setEndOfDay(endOfDay);
+		user.setEndTime(endTime);
+		user.setEntityTypeVersion(entityTypeVersion);
+		user.setFax(fax);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setPassword(password);
+		user.setPhone(phone);
+		user.setQuote(quote);
+		user.setResetPassword(resetPassword);
+		user.setStartOfDay(startOfDay);
+		user.setStartTime(startTime);
+		user.setUsername(username);
+		
+		for(UserPreference preference : preferences)
+		{
+			user.addPreference(preference.getValue(), preference.getPreference());
+		}
+		
+		return user;
 	}
 }

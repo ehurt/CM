@@ -7,9 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 @Entity
 @Table(name="preferences")
-public class Preference implements org.church.management.interfaces.entity.Entity
+public class Preference
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +25,8 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 	
 	public Preference()
 	{
-		
+		this.name = "";
+		this.defaultValue = "";
 	}
 	
 	public Integer getId() {
@@ -50,21 +53,42 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 		this.defaultValue = defaultValue;
 	}
 
-	public int getEntityTypeVersion() 
+	public int hashCode()
 	{
-		return 0;
+		return new HashCodeBuilder().append(name).append(defaultValue).toHashCode();
 	}
-
-	public void setEntityTypeVersion(int version) 
-	{	
-	}
-
-	public String getEntityType() 
+	
+	public boolean equals(Object obj)
 	{
-		return "";
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof Preference)
+		{
+			Preference preference = (Preference) obj;
+			
+			if(preference == this)
+			{
+				return true;
+			}
+			
+			if(name.equals(preference.getName())&& defaultValue.equals(preference.getDefaultValue()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
-
-	public void setEntityType(String entityType) 
-	{	
+	
+	public Preference clone()
+	{
+		Preference preference = new Preference();
+		preference.setName(name);
+		preference.setDefaultValue(defaultValue);
+		
+		return preference;
 	}
 }

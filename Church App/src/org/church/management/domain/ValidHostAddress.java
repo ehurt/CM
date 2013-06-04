@@ -1,22 +1,12 @@
 package org.church.management.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.church.management.domain.exceptions.DAOConstraintViolationException;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.exceptions.DAONoObjectFoundException;
-import org.church.management.domain.exceptions.DAOStaleStateException;
-import org.church.management.domain.manager.ValidHostAddressManager;
-import org.church.management.record.locking.exception.LockException;
-import org.church.management.utils.UrlUtils;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * 
@@ -28,7 +18,7 @@ import org.church.management.utils.UrlUtils;
 
 @javax.persistence.Entity
 @Table(name="valid_host_addresses")
-public class ValidHostAddress implements org.church.management.interfaces.entity.Entity
+public class ValidHostAddress
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,12 +33,11 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 	@Column(name="entity_id", length=20)
 	private String entityId;
 	
-	@Transient
-	private ValidHostAddressManager manager = null;
-	
 	public ValidHostAddress()
 	{
-		manager = new ValidHostAddressManager();
+		pattern = "";
+		entity = "";
+		entityId = "";
 	}
 	
 	public Integer getId() 
@@ -69,24 +58,6 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 	public void setPattern(String pattern) 
 	{
 		this.pattern = pattern;
-	}
-
-	public int getEntityTypeVersion() 
-	{
-		return 0;
-	}
-
-	public void setEntityTypeVersion(int version) 
-	{		
-	}
-
-	public String getEntityType() 
-	{
-		return null;
-	}
-
-	public void setEntityType(String entityType)
-	{	
 	}
 	
 	public String getEntity()
@@ -109,48 +80,43 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 		this.entityId = id;
 	}
 	
-	public List<ValidHostAddress> getAll() throws DAOException
+	public ValidHostAddress clone()
 	{
-		return manager.getAll();
+		ValidHostAddress address = new ValidHostAddress();
+		address.setEntity(entity);
+		address.setEntityId(entityId);
+		address.setPattern(pattern);
+		
+		return address;
 	}
 	
-	public void getObject() throws DAOException, DAONoObjectFoundException
+	public int hashCode()
 	{
-		ValidHostAddress address = manager.getObject(getId());
-		copy(address, this);
+		return new HashCodeBuilder().append(pattern).append(entity).append(entityId).toHashCode();
 	}
-
-	public void copy(ValidHostAddress source, ValidHostAddress target) 
+	
+	public boolean equals(Object obj)
 	{
-		try
+		if(obj == null)
 		{
-			PropertyUtils.copyProperties(target, source);
+			return false;
 		}
-		catch(Exception e){}
-	}
-	
-	public void save() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException
-	{
-		manager.save(this);
-	}
-	
-	public void delete() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException
-	{
-		manager.delete(this);
-	}
-	
-	public void update() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException
-	{
-		manager.update(this);
-	}
-	
-	public List<ValidHostAddress> getAllValidHostAddressByReference(String entity, String id) throws DAOException
-	{
-		return manager.getAllValidHostAddressByReference(entity, id);
-	}
-	
-	public boolean validateIPAddress(String host)
-	{
-		return UrlUtils.verifyIPAddress(pattern, host);
+		
+		else if(obj instanceof ValidHostAddress)
+		{
+			ValidHostAddress address = (ValidHostAddress) obj;
+			
+			if(address == this)
+			{
+				return true;
+			}
+			
+			if(pattern.equals(address.getPattern()) && entity.equals(address.getEntity()) && entityId.equals(address.getEntityId()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

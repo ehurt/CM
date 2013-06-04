@@ -1,5 +1,7 @@
 package org.church.management.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,10 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 @Entity
 @Table(name="user_preferences")
-public class UserPreference 
+public class UserPreference implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -28,7 +34,7 @@ public class UserPreference
 	
 	public UserPreference()
 	{
-		
+		this.value = "";
 	}
 
 	public Preference getPreference() {
@@ -53,5 +59,45 @@ public class UserPreference
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		else if(obj instanceof UserPreference)
+		{
+			UserPreference preference = (UserPreference) obj;
+			
+			if(preference == this)
+			{
+				return true;
+			}
+			
+			if(getPreference().equals(preference.getPreference()) && getUser().equals(preference.getUser()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(value).append(user).append(preference).toHashCode();
+	}
+	
+	public UserPreference clone()
+	{
+		UserPreference userPreference = new UserPreference();
+		userPreference.setUser(user);
+		userPreference.setValue(value);
+		userPreference.setPreference(preference);
+		
+		return userPreference;
 	}
 }
