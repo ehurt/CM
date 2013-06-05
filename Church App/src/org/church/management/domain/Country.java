@@ -13,6 +13,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Table(name="countries")
 public class Country implements org.church.management.interfaces.entity.Entity
 {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;

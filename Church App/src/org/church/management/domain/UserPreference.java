@@ -1,7 +1,5 @@
 package org.church.management.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="user_preferences")
-public class UserPreference implements Serializable, org.church.management.interfaces.entity.Entity
+public class UserPreference implements org.church.management.interfaces.entity.Entity
 {
 	private static final long serialVersionUID = 1L;
 

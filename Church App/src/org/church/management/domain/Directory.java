@@ -13,6 +13,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Table(name="directories")
 public class Directory implements org.church.management.interfaces.entity.Entity
 {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id = 0;
