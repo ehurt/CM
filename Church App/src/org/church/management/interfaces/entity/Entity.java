@@ -1,6 +1,8 @@
 package org.church.management.interfaces.entity;
 
-public interface Entity 
+import java.io.Serializable;
+
+public interface Entity extends Serializable
 {
 	public Integer getId();
 	public void setId(Integer id);
