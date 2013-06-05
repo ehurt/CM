@@ -1,25 +1,51 @@
 package org.church.management.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="notes")
-public class Note
+public class Note implements org.church.management.interfaces.entity.Entity
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
+	@Column(name="entity", length=50)
 	private String entity;
 	
+	@Column(name="object_id", length=30)
 	private String objectId;
 	
+	@Column(name="title", length=100)
 	private String title;
 	
+	@Column(name="body", length=1500)
 	private String body;
 	
+	@Column(name="is_private")
 	private boolean isPrivate;
 	
+	@ManyToOne
 	private User owner;
+	
+	public Note()
+	{
+		id = null;
+		body = "";
+		title = "";
+		isPrivate = false;
+		objectId = "";
+		entity = "";
+	}
 	
 	public Integer getId() 
 	{
@@ -79,4 +105,53 @@ public class Note
 		this.owner = owner;
 	}
 
+	public String getEntityType() 
+	{
+		return Note.class.getName();
+	}
+
+	public void setEntityType(String entityType) 
+	{		
+	}
+	
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(entity).append(objectId).append(isPrivate).append(title).append(body).toHashCode();
+	}
+	
+	public Note clone()
+	{
+		Note note = new Note();
+		note.setEntity(entity);
+		note.setBody(body);
+		note.setObjectId(objectId);
+		note.setOwner(owner);
+		note.setPrivate(isPrivate);
+		note.setTitle(title);
+		
+		return note;
+	}
+	
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		
+		if(obj instanceof Note)
+		{
+			Note note = (Note) obj;
+			
+			if(note == this)
+			{
+				return true;
+			}
+			
+			return new EqualsBuilder().append(isPrivate, note.isPrivate()).append(title, note.getTitle()).append(body, note.getBody()).append(entity, note.getEntity()).append(objectId, note.getObjectId()).isEquals();
+					
+		}
+		
+		return false;
+	}
 }

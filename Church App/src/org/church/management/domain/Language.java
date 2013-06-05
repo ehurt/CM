@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
@@ -96,10 +97,7 @@ public class Language implements org.church.management.interfaces.entity.Entity
 				return true;
 			}
 			
-			if(language.getName().equals(name) && language.getAbbrevation().equals(abbrevation))
-			{
-				return true;
-			}
+			return new EqualsBuilder().append(name, language.getName()).append(abbrevation, language.getAbbrevation()).isEquals();
 		}
 		
 		return false;
