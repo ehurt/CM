@@ -33,7 +33,7 @@ public class ApplicationFile extends StandardFields
 	private String entity;
 	
 	//the id of the object
-	@Column(name="object_id", length=20)
+	@Column(name="object_id", length=30)
 	private String objectId;
 	
 	//directoryName

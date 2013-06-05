@@ -11,13 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.church.management.domain.exceptions.DAOException;
-import org.church.management.domain.manager.ValidHostAddressManager;
 import org.church.management.domain.standard.fields.StandardFields;
 import org.joda.time.LocalTime;
 

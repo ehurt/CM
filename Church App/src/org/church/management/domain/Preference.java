@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
@@ -74,10 +75,7 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 				return true;
 			}
 			
-			if(name.equals(preference.getName())&& defaultValue.equals(preference.getDefaultValue()))
-			{
-				return true;
-			}
+			return new EqualsBuilder().append(name, preference.getName()).append(defaultValue, preference.getDefaultValue()).isEquals();
 		}
 		
 		return false;

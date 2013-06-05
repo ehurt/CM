@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
@@ -30,14 +31,14 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 	@Column(name="entity", length=50)
 	private String entity;
 	
-	@Column(name="entity_id", length=20)
-	private String entityId;
+	@Column(name="object_id", length=30)
+	private String objectId;
 	
 	public ValidHostAddress()
 	{
 		pattern = "";
 		entity = "";
-		entityId = "";
+		objectId = "";
 	}
 	
 	public Integer getId() 
@@ -70,21 +71,21 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 		this.entity = entity;
 	}
 	
-	public String getEntityId()
+	public String getObjectId()
 	{
-		return entityId;
+		return objectId;
 	}
 	
-	public void setEntityId(String id)
+	public void setObjectId(String id)
 	{
-		this.entityId = id;
+		this.objectId = id;
 	}
 	
 	public ValidHostAddress clone()
 	{
 		ValidHostAddress address = new ValidHostAddress();
 		address.setEntity(entity);
-		address.setEntityId(entityId);
+		address.setObjectId(objectId);
 		address.setPattern(pattern);
 		
 		return address;
@@ -92,7 +93,7 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 	
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(pattern).append(entity).append(entityId).toHashCode();
+		return new HashCodeBuilder().append(pattern).append(entity).append(objectId).toHashCode();
 	}
 	
 	public boolean equals(Object obj)
@@ -111,10 +112,7 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 				return true;
 			}
 			
-			if(pattern.equals(address.getPattern()) && entity.equals(address.getEntity()) && entityId.equals(address.getEntityId()))
-			{
-				return true;
-			}
+			return new EqualsBuilder().append(pattern, address.getPattern()).append(entity, address.getEntity()).append(objectId, address.getObjectId()).isEquals();
 		}
 		
 		return false;
