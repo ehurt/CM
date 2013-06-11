@@ -20,7 +20,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @javax.persistence.Entity
 @Table(name="addresses")
-public class Address implements org.church.management.interfaces.entity.Entity
+public class Address implements org.church.management.interfaces.entity.Entity<Integer>
 {
 	private static final long serialVersionUID = 1L;
 

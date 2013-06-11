@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="preferences")
-public class Preference implements org.church.management.interfaces.entity.Entity
+public class Preference implements org.church.management.interfaces.entity.Entity<Integer>
 {
 	private static final long serialVersionUID = 1L;
 

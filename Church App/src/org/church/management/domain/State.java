@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Entity
 @Table(name="states")
-public class State implements org.church.management.interfaces.entity.Entity
+public class State implements org.church.management.interfaces.entity.Entity<Integer>
 {
 	private static final long serialVersionUID = 1L;
 

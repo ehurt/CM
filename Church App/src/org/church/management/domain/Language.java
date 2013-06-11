@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="languages")
-public class Language implements org.church.management.interfaces.entity.Entity
+public class Language implements org.church.management.interfaces.entity.Entity<Integer>
 {
 
 	private static final long serialVersionUID = 1L;

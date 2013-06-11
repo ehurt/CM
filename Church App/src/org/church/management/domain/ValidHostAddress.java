@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @javax.persistence.Entity
 @Table(name="valid_host_addresses")
-public class ValidHostAddress implements org.church.management.interfaces.entity.Entity
+public class ValidHostAddress implements org.church.management.interfaces.entity.Entity<Integer>
 {
 
 	private static final long serialVersionUID = 1L;

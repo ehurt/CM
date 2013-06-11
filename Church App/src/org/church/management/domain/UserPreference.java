@@ -3,23 +3,19 @@ package org.church.management.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.church.management.domain.keys.UserPreferenceID;
 
 @Entity
 @Table(name="user_preferences")
-public class UserPreference implements org.church.management.interfaces.entity.Entity
+public class UserPreference implements org.church.management.interfaces.entity.Entity<UserPreferenceID>
 {
 	private static final long serialVersionUID = 1L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	
+	private UserPreferenceID id;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	private User user;
@@ -33,6 +29,7 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 	public UserPreference()
 	{
 		this.value = "";
+		this.id = new UserPreferenceID();
 	}
 
 	public Preference getPreference() {
@@ -100,18 +97,6 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 	}
 
 	@Override
-	public Integer getId() 
-	{
-		return id;
-	}
-
-	@Override
-	public void setId(Integer id) 
-	{
-		this.id = id;
-	}
-
-	@Override
 	public String getEntityType()
 	{
 		return UserPreference.class.getName();
@@ -120,5 +105,15 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 	@Override
 	public void setEntityType(String entityType) 
 	{
+	}
+
+	public UserPreferenceID getId() 
+	{
+		return id;
+	}
+
+	public void setId(UserPreferenceID id) 
+	{	
+		this.id = id;
 	}
 }
