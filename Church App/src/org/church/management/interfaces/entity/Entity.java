@@ -2,10 +2,10 @@ package org.church.management.interfaces.entity;
 
 import java.io.Serializable;
 
-public interface Entity extends Serializable
+public interface Entity<ID extends Serializable> extends Serializable
 {
-	public Integer getId();
-	public void setId(Integer id);
+	public ID getId();
+	public void setId(ID id);
 	
 	public String getEntityType();
 	public void setEntityType(String entityType);
