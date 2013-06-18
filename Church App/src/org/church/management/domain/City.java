@@ -137,8 +137,4 @@ public class City implements org.church.management.interfaces.entity.Entity<Inte
 		return City.class.getName();
 	}
 
-	@Override
-	public void setEntityType(String entityType) 
-	{	
-	}
 }

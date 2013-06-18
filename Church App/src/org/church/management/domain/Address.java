@@ -174,10 +174,4 @@ public class Address implements org.church.management.interfaces.entity.Entity<I
 	{
 		return Address.class.getName();
 	}
-
-	@Override
-	public void setEntityType(String entityType) 
-	{
-		
-	}
 }

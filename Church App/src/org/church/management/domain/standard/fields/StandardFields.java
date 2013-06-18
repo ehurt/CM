@@ -26,7 +26,7 @@ import org.church.management.interfaces.entity.VersionedEntity;
  */
 
 @MappedSuperclass
-public class StandardFields implements VersionedEntity
+public class StandardFields implements VersionedEntity<Integer>
 {
 
 	private static final long serialVersionUID = 1L;

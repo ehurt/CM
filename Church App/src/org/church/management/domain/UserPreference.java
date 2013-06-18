@@ -102,11 +102,6 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 		return UserPreference.class.getName();
 	}
 
-	@Override
-	public void setEntityType(String entityType) 
-	{
-	}
-
 	public UserPreferenceID getId() 
 	{
 		return id;

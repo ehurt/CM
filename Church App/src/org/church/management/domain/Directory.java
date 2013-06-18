@@ -119,9 +119,4 @@ public class Directory implements org.church.management.interfaces.entity.Entity
 	{
 		return Directory.class.getName();
 	}
-
-	@Override
-	public void setEntityType(String entityType) 
-	{
-	}
 }

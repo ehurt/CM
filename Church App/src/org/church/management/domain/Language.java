@@ -111,9 +111,4 @@ public class Language implements org.church.management.interfaces.entity.Entity<
 	{
 		return Language.class.getName();
 	}
-
-	@Override
-	public void setEntityType(String entityType) 
-	{	
-	}
 }
