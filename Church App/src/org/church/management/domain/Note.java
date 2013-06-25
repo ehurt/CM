@@ -151,8 +151,7 @@ public class Note implements org.church.management.interfaces.entity.Entity<Inte
 				return true;
 			}
 			
-			return new EqualsBuilder().append(isPrivate, note.isPrivate()).append(title, note.getTitle()).append(body, note.getBody()).append(entity, note.getEntity()).append(objectId, note.getObjectId()).isEquals();
-					
+			return new EqualsBuilder().append(note.getId(), this.getId()).isEquals();
 		}
 		
 		return false;
