@@ -8,5 +8,4 @@ public interface Entity<ID extends Serializable> extends Serializable
 	public void setId(ID id);
 	
 	public String getEntityType();
-	public void setEntityType(String entityType);
 }
