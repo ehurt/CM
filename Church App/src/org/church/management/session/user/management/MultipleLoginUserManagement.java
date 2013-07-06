@@ -1,6 +1,7 @@
 package org.church.management.session.user.management;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.List;
@@ -22,9 +23,7 @@ public class MultipleLoginUserManagement implements LoginUserManagement
 	
 	public List<SessionUser> getListOfCurrentUsers() 
 	{
-		ArrayList<SessionUser> users = new ArrayList<SessionUser>();
-		users.addAll(currentUsers.values());
-		return users;
+		return (List<SessionUser>) Collections.unmodifiableCollection(currentUsers.values());
 	}
 
 	public boolean login(String sessionId, User user)
