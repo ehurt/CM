@@ -11,6 +11,14 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+
+/**
+ * 
+ * @author Trae
+ *
+ * This class is for attaching notes to an entity.
+ *
+ */
 @Entity
 @Table(name="notes")
 public class Note implements org.church.management.interfaces.entity.Entity<Integer>
@@ -111,10 +119,6 @@ public class Note implements org.church.management.interfaces.entity.Entity<Inte
 	public String getEntityType() 
 	{
 		return Note.class.getName();
-	}
-
-	public void setEntityType(String entityType) 
-	{		
 	}
 	
 	public int hashCode()
