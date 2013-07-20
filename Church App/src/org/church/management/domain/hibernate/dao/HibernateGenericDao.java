@@ -2,6 +2,7 @@ package org.church.management.domain.hibernate.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import org.church.management.domain.generic.dao.GenericDao;
 import org.church.management.interfaces.entity.Entity;
@@ -18,13 +19,28 @@ public class HibernateGenericDao<T extends Entity<?>, I> implements GenericDao<T
 	
 	private SessionFactory sessionFactory;
 	
+	private boolean debugging;
+	private Session session;
+	
 	public HibernateGenericDao(Class<T> entity)
 	{
 		this.persistedClass = entity;
+		this.setDebugging(false);
 	}
 	
 	public Session getCurrentSession()
 	{
+		//this is for debugging purposes
+		if(debugging)
+		{
+			if(session == null)
+			{
+				session = sessionFactory.openSession();
+			}
+			
+			return session;
+		}
+		
 		return sessionFactory.getCurrentSession();
 	}
 	
@@ -97,11 +113,22 @@ public class HibernateGenericDao<T extends Entity<?>, I> implements GenericDao<T
 		return (List<T>) query.list();
 	}
 
-	public SessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() 
+	{
 		return sessionFactory;
 	}
 
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
+	}
+
+	public boolean isDebugging() 
+	{
+		return debugging;
+	}
+
+	public void setDebugging(boolean debugging) 
+	{
+		this.debugging = debugging;
 	}	
 }

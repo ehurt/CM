@@ -2,34 +2,42 @@ package org.church.management.domain.hibernate.dao;
 
 import java.util.List;
 
-import org.church.management.domain.Attender;
+import org.church.management.domain.Original_Attender;
+import org.church.management.domain.Member;
+import org.church.management.domain.Regular;
+import org.church.management.domain.Visitor;
 import org.church.management.domain.dao.AttenderDao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
-public class HibernateAttenderDao extends HibernateGenericDao<Attender, Integer> implements AttenderDao
+public class HibernateAttenderDao extends HibernateGenericDao<Original_Attender, Integer> implements AttenderDao
 {
 	public HibernateAttenderDao()
 	{
-		super(Attender.class);
+		super(Original_Attender.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Attender> getAllMembers() 
+	public List<Member> getAllMembers() 
 	{
 		Session session = getCurrentSession();
-		Criteria criteria = session.createCriteria(Attender.class);
-		criteria.add(Restrictions.eq("isMember", true));
+		Criteria criteria = session.createCriteria(Member.class);
 		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Attender> getAllRegulars() 
+	public List<Regular> getAllRegulars() 
 	{
 		Session session = getCurrentSession();
-		Criteria criteria = session.createCriteria(Attender.class);
-		criteria.add(Restrictions.eq("isRegular", true));
+		Criteria criteria = session.createCriteria(Regular.class);
+		return criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Visitor> getAllVisitors()
+	{
+		Session session = getCurrentSession();
+		Criteria criteria = session.createCriteria(Visitor.class);
 		return criteria.list();
 	}
 	
