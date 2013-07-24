@@ -2,9 +2,12 @@ package org.church.management.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -40,6 +43,7 @@ public class ChurchInfo implements org.church.management.interfaces.entity.Entit
 	@Column(name="minstry", length=50)
 	private String partOfMinistry;
 	
+	@ManyToOne(fetch=FetchType.EAGER)
 	private Address address;
 	
 	@Column(name="email", length=70)
@@ -61,6 +65,9 @@ public class ChurchInfo implements org.church.management.interfaces.entity.Entit
 	
 	@Column(name="website", length=100)
 	private String website = "";
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	private Member pastor;
 	
 	public ChurchInfo()
 	{
@@ -178,6 +185,16 @@ public class ChurchInfo implements org.church.management.interfaces.entity.Entit
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	
+	public Member getPastor()
+	{
+		return pastor;
+	}
+	
+	public void setPastor(Member pastor)
+	{
+		this.pastor = pastor;
 	}
 
 	@Override

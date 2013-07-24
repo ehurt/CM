@@ -77,7 +77,7 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 				return true;
 			}
 			
-			return new EqualsBuilder().append(name, preference.getName()).append(defaultValue, preference.getDefaultValue()).isEquals();
+			return new EqualsBuilder().append(name, preference.getName()).isEquals();
 		}
 		
 		return false;
@@ -87,7 +87,6 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 	{
 		Preference preference = new Preference();
 		preference.setName(name);
-		preference.setDefaultValue(defaultValue);
 		
 		return preference;
 	}

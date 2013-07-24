@@ -1,7 +1,6 @@
 package org.church.management.domain;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,6 +13,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.church.management.domain.standard.fields.StandardFields;
 import org.joda.time.LocalTime;
@@ -261,33 +261,25 @@ public class User extends StandardFields
 	public void addPreference(String value, Preference preference)
 	{
 		UserPreference userPreference = new UserPreference();
-		userPreference.setUser(this);
-		userPreference.setPreference(preference);
+		userPreference.getId().setUser(this);
+		userPreference.getId().setPreference(preference);
 		userPreference.setValue(value);
 		preferences.add(userPreference);
 	}
 	
 	public void removePreference(Preference preference)
 	{
-		Iterator<UserPreference> iterator = preferences.iterator();
-		
-		while(iterator.hasNext())
-		{
-			UserPreference userPreference = iterator.next();
-			
-			if(userPreference.getPreference().equals(preference))
-			{
-				iterator.remove();
-				return;
-			}
-		}
+		UserPreference userPreference = new UserPreference();
+		userPreference.getId().setUser(this);
+		userPreference.getId().setPreference(preference);
+		preferences.remove(userPreference);
 	}
 	
 	public UserPreference getPreference(String preference)
 	{
 		for(UserPreference userPreference: preferences)
 		{
-			if(userPreference.getPreference().getName().equals(preference))
+			if(userPreference.getId().getPreference().getName().equals(preference))
 			{
 				return userPreference;
 			}
@@ -312,10 +304,7 @@ public class User extends StandardFields
 				return true;
 			}
 			
-			if(user.getUsername().equals(username))
-			{
-				return true;
-			}
+			return new EqualsBuilder().append(this.username, user.getUsername()).isEquals();
 		}
 		
 		return false;
@@ -347,9 +336,9 @@ public class User extends StandardFields
 		user.setStartTime(startTime);
 		user.setUsername(username);
 		
-		for(UserPreference preference : preferences)
+		for(UserPreference userPreference : preferences)
 		{
-			user.addPreference(preference.getValue(), preference.getPreference());
+			user.addPreference(userPreference.getValue(), userPreference.getId().getPreference());
 		}
 		
 		return user;

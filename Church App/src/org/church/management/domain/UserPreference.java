@@ -2,10 +2,10 @@ package org.church.management.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.church.management.domain.keys.UserPreferenceID;
 
@@ -15,13 +15,8 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 {
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	private UserPreferenceID id;
-	
-	@OneToOne(fetch=FetchType.EAGER)
-	private User user;
-	
-	@OneToOne(fetch= FetchType.EAGER)
-	private Preference preference;
 	
 	@Column(name="value", length=100)
 	private String value;
@@ -32,14 +27,6 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 		this.id = new UserPreferenceID();
 	}
 
-	public Preference getPreference() {
-		return preference;
-	}
-
-	public void setPreference(Preference preference) {
-		this.preference = preference;
-	}
-
 	public String getValue() {
 		return value;
 	}
@@ -48,12 +35,19 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 		this.value = value;
 	}
 
-	public User getUser() {
-		return user;
+	public String getEntityType()
+	{
+		return UserPreference.class.getName();
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public UserPreferenceID getId() 
+	{
+		return id;
+	}
+
+	public void setId(UserPreferenceID id) 
+	{	
+		this.id = id;
 	}
 	
 	public boolean equals(Object obj)
@@ -72,10 +66,7 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 				return true;
 			}
 			
-			if(getPreference().equals(preference.getPreference()) && getUser().equals(preference.getUser()))
-			{
-				return true;
-			}
+			return new EqualsBuilder().append(preference.getId(), this.getId()).isEquals();
 		}
 		
 		return false;
@@ -83,32 +74,15 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 	
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(value).append(user).append(preference).toHashCode();
+		return new HashCodeBuilder().append(value).append(id).toHashCode();
 	}
 	
 	public UserPreference clone()
 	{
 		UserPreference userPreference = new UserPreference();
-		userPreference.setUser(user);
 		userPreference.setValue(value);
-		userPreference.setPreference(preference);
+		userPreference.setId(id);
 		
 		return userPreference;
-	}
-
-	@Override
-	public String getEntityType()
-	{
-		return UserPreference.class.getName();
-	}
-
-	public UserPreferenceID getId() 
-	{
-		return id;
-	}
-
-	public void setId(UserPreferenceID id) 
-	{	
-		this.id = id;
 	}
 }

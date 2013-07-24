@@ -45,7 +45,12 @@ public class Address implements org.church.management.interfaces.entity.Entity<I
 	
 	public Address()
 	{
-
+		id = null;
+		address = "";
+		city = null;
+		state = null;
+		country = null;
+		zipcode = "";
 	}
 	
 	public Integer getId() {

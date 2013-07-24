@@ -2,6 +2,7 @@ package org.church.management.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -45,7 +46,7 @@ public class Note implements org.church.management.interfaces.entity.Entity<Inte
 	@Column(name="is_private")
 	private boolean isPrivate;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	private User owner;
 	
 	public Note()
