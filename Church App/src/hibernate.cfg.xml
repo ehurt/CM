@@ -20,12 +20,15 @@
 		<mapping class="org.church.management.domain.Directory"/>
 		<mapping class="org.church.management.domain.Language"/>
 		<mapping class="org.church.management.domain.User"/>
+		<mapping class="org.church.management.domain.Note"/>
 		<mapping class="org.church.management.domain.ValidHostAddress"/>
 		<mapping class="org.church.management.domain.Country"/>
 		<mapping class="org.church.management.domain.State"/>
 		<mapping class="org.church.management.domain.City"/>
 		<mapping class="org.church.management.domain.Address"/>
 		<mapping class="org.church.management.domain.ApplicationFile"/>
+		<mapping class="org.church.management.domain.Preference"/>
+		<mapping class="org.church.management.domain.UserPreference"/>
 		
 	
 	</session-factory>
