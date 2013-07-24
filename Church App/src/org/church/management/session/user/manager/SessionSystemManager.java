@@ -9,9 +9,7 @@ import org.church.management.session.user.SessionUser;
 import org.church.management.session.user.management.LoginUserManagement;
 import org.church.management.session.user.management.MultipleLoginUserManagement;
 import org.church.management.session.user.management.SingleLoginUserManagement;
-import org.church.management.session.user.manager.exception.UserAlreadyLoginException;
-
-
+import org.church.management.session.user.manager.exception.ConcurrentLoginException;
 
 /**
  * 
@@ -40,15 +38,15 @@ public class SessionSystemManager
 	 * 
 	 * @param session: the user's http session
 	 * @param user: the user information.
-	 * @throws UserAlreadyLoginException: if the user is already logged in.
+	 * @throws ConcurrentLoginException: if the user is already logged in.
 	 */
-	public synchronized static void addUser(String sessionId, User user) throws UserAlreadyLoginException
+	public synchronized static void addUser(String sessionId, User user) throws ConcurrentLoginException
 	{
 		boolean isLoggedIn = management.login(sessionId, user);
 		logger.info("SessionSystemManager.addUser()- User "+user.getId()+" "+sessionId+" was added "+sessionId);
 		
 		if(isLoggedIn == false){
-			throw new UserAlreadyLoginException("The user is currently login in.");
+			throw new ConcurrentLoginException("The user is currently login in.");
 		}
 	}
 	
@@ -75,7 +73,11 @@ public class SessionSystemManager
 	{
 		SessionUser user = management.getUserBySessionId(sessionId);
 		management.logout(sessionId);
-		logger.info("SessionSystemManager.invalidUser()- About to invalid user "+user.getUser().getId()+".");
+		
+		if(user != null)
+		{
+			logger.info("SessionSystemManager.invalidUser()- About to invalid user "+user.getUser().getId()+".");
+		}
 	}
 	
 	public synchronized static void logout(String sessionId)

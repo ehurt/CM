@@ -1,5 +1,7 @@
 package org.church.management.session.listener;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Hashtable;
 
 import javax.servlet.http.HttpSession;
@@ -8,6 +10,9 @@ import javax.servlet.http.HttpSessionListener;
 
 import org.apache.log4j.Logger;
 import org.church.management.configuration.Configuration;
+import org.church.management.record.locking.management.ObjectLockSystemManager;
+import org.church.management.session.user.SessionUser;
+import org.church.management.session.user.manager.SessionSystemManager;
 
 /**
  * 
@@ -19,7 +24,7 @@ import org.church.management.configuration.Configuration;
  */
 public class CMHttpSessionListener implements HttpSessionListener
 {
-	private static Logger log = Logger.getLogger(CMHttpSessionListenerTester.class);
+	private static Logger logger = Logger.getLogger(CMHttpSessionListenerTester.class);
 	private static Hashtable<String, HttpSession> sessions = new Hashtable<String, HttpSession>();
 	
 	public void sessionCreated(HttpSessionEvent e) 
@@ -33,12 +38,27 @@ public class CMHttpSessionListener implements HttpSessionListener
 
 	public void sessionDestroyed(HttpSessionEvent e) 
 	{
-		sessions.remove(e.getSession().getId());
+		String sessionId = e.getSession().getId();
+		
+		sessions.remove(sessionId);
+		
+		//unlock all the record locks.
+		ObjectLockSystemManager.unlockAllRecordsForUser(sessionId);
+	
+		//remove the logout the user.
+		SessionUser user = SessionSystemManager.getUserInfo(sessionId);
+		SessionSystemManager.logout(sessionId);
+		
+		logger.debug("CMHttpSessionListener.sessionDestroyed()- Unlock all records for user: "+user.getUser().getUsername()+".");
+	}
+		
+	public static Collection<HttpSession> getSessions()
+	{
+		return Collections.unmodifiableCollection(sessions.values());
 	}
 	
-	public static Hashtable<String, HttpSession> getSessions()
+	public static HttpSession getSession(String sessionId)
 	{
-		return sessions;
+		return sessions.get(sessionId);
 	}
-
 }

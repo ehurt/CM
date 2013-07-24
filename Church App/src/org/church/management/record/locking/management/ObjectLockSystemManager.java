@@ -1,6 +1,7 @@
 package org.church.management.record.locking.management;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -16,7 +17,7 @@ import org.church.management.record.locking.info.LockInfo;
 public class ObjectLockSystemManager 
 {
 	private static final Logger logger = Logger.getLogger(ObjectLockSystemManager.class);
-	private static Hashtable<String, LockInfo> locks = new Hashtable<String, LockInfo>();
+	private static Hashtable<Object, LockInfo> locks = new Hashtable<Object, LockInfo>();
 
 	private ObjectLockSystemManager(){}
 	
@@ -31,24 +32,23 @@ public class ObjectLockSystemManager
 	 */
 	public static synchronized void lock(Entity object, String sessionId, String username) throws LockException
 	{
-		String key = object.getEntityType()+"-"+object.getId();
-		boolean isLocked = locks.containsKey(key);
+		boolean isLocked = locks.containsKey(object);
 		
 		//so the object is locked
 		if(isLocked)
 		{
-			LockInfo info = locks.get(key);
+			LockInfo info = locks.get(object);
 			
 			//check if it is the same person.
 			if(info.getSessionId().equals(sessionId))
 			{
-				logger.info("ObjectLockSystemManager.lock()- "+username+" is re-locking record: "+key+".");
+				logger.info("ObjectLockSystemManager.lock()- "+username+" is re-locking record: "+object+".");
 			}
 			
 			//different person
 			else
 			{
-				logger.info("ObjectLockSystemManager.lock()- "+username+" could not acquire a lock on record: "+key+".");
+				logger.info("ObjectLockSystemManager.lock()- "+username+" could not acquire a lock on record: "+object+".");
 				throw new LockException(info.getUsername(), object, info.getDate());
 			}
 		}
@@ -56,9 +56,9 @@ public class ObjectLockSystemManager
 		else
 		{
 			Date lockTime = new Date();
-			logger.info("ObjectLockSystemManager.lock()- "+username+" has locked record: "+key+" at "+lockTime+".");
+			logger.info("ObjectLockSystemManager.lock()- "+username+" has locked record: "+object+" at "+lockTime+".");
 			LockInfo info = new LockInfo(sessionId, username, object, lockTime);
-			locks.put(key, info);
+			locks.put(object, info);
 		}
 		
 	}
@@ -69,13 +69,37 @@ public class ObjectLockSystemManager
 	 * 
 	 * @param object: the lock object
 	 */
-	public static synchronized void unlock(Entity object)
+	public static synchronized void unlock(Entity object, String sessionId)
 	{
-		String key = getEntityId(object);
-		LockInfo info = locks.remove(key);
-		logger.info(info.getUsername()+" has released the lock on object: "+key+" at "+new Date());
-		System.out.println(info.getUsername()+" has released the lock on object: "+key+" at "+new Date());
-
+		LockInfo info = locks.get(object);
+		
+		if(info != null)
+		{
+			if(info.getSessionId().equals(sessionId))
+			{
+				locks.remove(object);
+				logger.info(info.getUsername()+" has released the lock on object: "+object+" at "+new Date());
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * This method will unlock all records for a session.
+	 * 
+	 * @param sessionId
+	 */
+	public static synchronized void unlockAllRecordsForUser(String sessionId)
+	{
+		for(Object key: locks.keySet())
+		{
+			LockInfo info = locks.get(key);
+			
+			if(info.getSessionId().equals(sessionId))
+			{
+				locks.remove(key);
+			}
+		}
 	}
 	
 	/**
@@ -86,8 +110,7 @@ public class ObjectLockSystemManager
 	 */
 	public static boolean isLocked(Entity object)
 	{
-		String key = getEntityId(object);
-		return locks.containsKey(key);
+		return locks.containsKey(object);
 	}
 	
 	/**
@@ -99,11 +122,10 @@ public class ObjectLockSystemManager
 	 */
 	public static synchronized LockInfo retrieveLockInformation(Entity object)
 	{
-		String key = getEntityId(object);
-		return locks.get(key);
+		return locks.get(object);
 	}
 	
-	public static synchronized List<LockInfo> ListOfLocks(String sessionId)
+	public static synchronized List<LockInfo> listOfLocks(String sessionId)
 	{
 		List<LockInfo> list = new ArrayList<LockInfo>();
 		
@@ -119,11 +141,17 @@ public class ObjectLockSystemManager
 			}
 		}
 		
-		return list;
+		return Collections.unmodifiableList(list);
 	}
 	
-	private static String getEntityId(Entity object)
+	/**
+	 * 
+	 * This method will return all the record locks.
+	 * 
+	 * @return
+	 */
+	public static synchronized List<LockInfo> listOfLocks()
 	{
-		return object.getEntityType()+"-"+object.getId();
+		return (List<LockInfo>) Collections.unmodifiableCollection(locks.values());
 	}
 }

@@ -15,12 +15,14 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.church.management.domain.User;
 import org.church.management.domain.ValidHostAddress;
-import org.church.management.domain.exceptions.DAOException;
+import org.church.management.domain.dao.UserDao;
+import org.church.management.domain.dao.ValidHostAddressDao;
 import org.church.management.security.token.UsernamePasswordSessionToken;
 import org.church.management.session.user.manager.SessionSystemManager;
-import org.church.management.session.user.manager.exception.UserAlreadyLoginException;
+import org.church.management.session.user.manager.exception.ConcurrentLoginException;
 import org.church.management.utils.UrlUtils;
-import org.joda.time.LocalTime;
+import org.church.management.utils.Utils;
+
 
 /**
  * 
@@ -31,6 +33,11 @@ import org.joda.time.LocalTime;
  */
 public class SecurityRealm extends AuthorizingRealm
 {
+	//TODO add annotations from spring
+	
+	private UserDao userDao;
+	
+	private ValidHostAddressDao validAddressDao;
 
 	public SecurityRealm()
 	{
@@ -60,7 +67,7 @@ public class SecurityRealm extends AuthorizingRealm
 		
 		try 
 		{
-			boolean login = user.login();
+			boolean login = userDao.login(username, password);
 			boolean validIPAddress = false;
 		
 			//check if the account is disabled
@@ -71,15 +78,26 @@ public class SecurityRealm extends AuthorizingRealm
 			
 			if(login)
 			{
+				boolean loginTime = false;
+				user = userDao.getUserByUserName(username);
+				
 				//check login in time
-				boolean loginTime = user.validLoginTime(new LocalTime());
+				if(user.getStartTime() != null)
+				{
+					loginTime = Utils.validLoginTime(user.getStartTime(), user.getEndTime());
+				}
+				
+				else
+				{
+					loginTime = true;
+				}
 				
 				if(loginTime)
 				{
 					//check the ip address
 					String host = userToken.getHost();
 					
-					List<ValidHostAddress> addresses = user.getValidHostAddressForUser();
+					List<ValidHostAddress> addresses = validAddressDao.getValidHostAddress("User", user.getId().toString());
 					
 					if(addresses.size() == 0)
 					{
@@ -118,15 +136,14 @@ public class SecurityRealm extends AuthorizingRealm
 			{
 				throw new IncorrectCredentialsException("Credentials are incorrect.");
 			}
-		} 
-		catch (DAOException e) 
-		{
-			throw new AuthenticationException("Could not authenticate.", e);
-		}
-		
-		catch(UserAlreadyLoginException e)
+		} 		
+		catch(ConcurrentLoginException e)
 		{
 			throw new ConcurrentAccessException("The username is already logged in.");
+		}
+		catch(Exception e)
+		{
+			throw new AuthenticationException("Cannot login.");
 		}
 		
 		SimpleAuthenticationInfo authInfo = new SimpleAuthenticationInfo(user.getId(), user.getPassword(), getName());
@@ -136,4 +153,19 @@ public class SecurityRealm extends AuthorizingRealm
 		return authInfo;
 	}
 
+	public UserDao getUserDao() {
+		return userDao;
+	}
+
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
+	
+	public ValidHostAddressDao getValidAddressDao() {
+		return validAddressDao;
+	}
+
+	public void setValidAddressDao(ValidHostAddressDao validAddressDao) {
+		this.validAddressDao = validAddressDao;
+	}
 }
