@@ -20,8 +20,11 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="name", unique=true, length=40)
+	@Column(name="name", length=40)
 	private String name;
+	
+	@Column(name="nameLc", unique=true, length=40)
+	private String nameLc;
 	
 	@Column(name="default_value", length=100)
 	private String defaultValue;
@@ -46,6 +49,12 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getNameLc()
+	{
+		nameLc = name.toLowerCase();
+		return nameLc;
 	}
 	
 	public String getDefaultValue() {
@@ -77,7 +86,7 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 				return true;
 			}
 			
-			return new EqualsBuilder().append(name, preference.getName()).isEquals();
+			return new EqualsBuilder().append(name.toLowerCase(), preference.getName().toLowerCase()).isEquals();
 		}
 		
 		return false;

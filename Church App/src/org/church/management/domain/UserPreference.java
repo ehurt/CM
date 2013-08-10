@@ -1,6 +1,7 @@
 package org.church.management.domain;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,7 +16,7 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@EmbeddedId
 	private UserPreferenceID id;
 	
 	@Column(name="value", length=100)

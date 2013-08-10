@@ -31,6 +31,9 @@ public class Address implements org.church.management.interfaces.entity.Entity<I
 	@Column(name="address", length=100)
 	private String address;
 	
+	@Column(name="apartment_number", length=20)
+	private String apartmentNumber;
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	private City city;
 	
@@ -99,6 +102,20 @@ public class Address implements org.church.management.interfaces.entity.Entity<I
 
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
+	}
+	
+	@Override
+	public String getEntityType() 
+	{
+		return Address.class.getName();
+	}
+
+	public String getApartmentNumber() {
+		return apartmentNumber;
+	}
+
+	public void setApartmentNumber(String apartmentNumber) {
+		this.apartmentNumber = apartmentNumber;
 	}
 
 	public int hashCode()
@@ -172,11 +189,5 @@ public class Address implements org.church.management.interfaces.entity.Entity<I
 		}
 		
 		return false;
-	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return Address.class.getName();
 	}
 }

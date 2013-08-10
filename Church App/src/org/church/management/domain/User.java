@@ -16,6 +16,7 @@ import org.hibernate.annotations.Type;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.church.management.domain.standard.fields.StandardFields;
+import org.church.management.exceptions.DuplicateException;
 import org.joda.time.LocalTime;
 
 @Entity
@@ -82,7 +83,7 @@ public class User extends StandardFields
 	@Column(name="quote", length=300)
 	private String quote;
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,targetEntity=UserPreference.class,orphanRemoval=true)
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
 	private List<UserPreference> preferences;
 	
 	public User()
@@ -258,13 +259,22 @@ public class User extends StandardFields
 		this.preferences = preferences;
 	}
 	
-	public void addPreference(String value, Preference preference)
+	public void addPreference(String value, Preference preference) throws DuplicateException
 	{
 		UserPreference userPreference = new UserPreference();
 		userPreference.getId().setUser(this);
 		userPreference.getId().setPreference(preference);
 		userPreference.setValue(value);
-		preferences.add(userPreference);
+		
+		if(preferences.contains(userPreference) == false)
+		{
+			preferences.add(userPreference);
+		}
+		
+		else
+		{
+			throw new DuplicateException("Cannot assign the same talent twice.");
+		}
 	}
 	
 	public void removePreference(Preference preference)
@@ -338,7 +348,12 @@ public class User extends StandardFields
 		
 		for(UserPreference userPreference : preferences)
 		{
-			user.addPreference(userPreference.getValue(), userPreference.getId().getPreference());
+			try {
+				user.addPreference(userPreference.getValue(), userPreference.getId().getPreference());
+			} catch (DuplicateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return user;

@@ -1,10 +1,21 @@
 package org.church.management.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.church.management.domain.keys.AttenderTalentID;
 import org.church.management.domain.standard.fields.StandardFields;
+import org.church.management.exceptions.DuplicateException;
 
 @SuppressWarnings("rawtypes")
+@Entity
+@Table(name="attenders")
 public class Attender extends StandardFields
 {
 	private static final long serialVersionUID = 1L;
@@ -39,6 +50,10 @@ public class Attender extends StandardFields
 	
 	protected boolean isActive;
 	
+	protected List<AttenderTalent> talents;
+
+	protected List<AttenderAllergy> allergies;
+	
 	public Attender()
 	{
 		super(Attender.class);
@@ -52,6 +67,8 @@ public class Attender extends StandardFields
 		email = "";
 		isMale = false;
 		isFemale = false;
+		talents = new ArrayList<AttenderTalent>();
+		allergies = new ArrayList<AttenderAllergy>();
 	}
 	
 	public Attender(Class c)
@@ -67,6 +84,8 @@ public class Attender extends StandardFields
 		email = "";
 		isMale = false;
 		isFemale = false;
+		talents = new ArrayList<AttenderTalent>();
+		allergies = new ArrayList<AttenderAllergy>();
 	}
 
 	public String getPrefix() {
@@ -81,8 +100,10 @@ public class Attender extends StandardFields
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
+	public void setFirstname(String firstname) 
+	{
 		this.firstname = firstname;
+		setName(firstname+" "+middlename+" "+lastname);
 	}
 
 	public String getMiddlename() {
@@ -91,6 +112,7 @@ public class Attender extends StandardFields
 
 	public void setMiddlename(String middlename) {
 		this.middlename = middlename;
+		setName(firstname+" "+middlename+" "+lastname);
 	}
 
 	public String getLastname() {
@@ -99,6 +121,7 @@ public class Attender extends StandardFields
 
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
+		setName(firstname+" "+middlename+" "+lastname);
 	}
 
 	public Address getAddress() {
@@ -203,5 +226,124 @@ public class Attender extends StandardFields
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+	
+	public List<AttenderTalent> getTalents() {
+		return talents;
+	}
+
+	public void setTalents(List<AttenderTalent> talents) {
+		this.talents = talents;
+	}
+	
+	public String getMarriedStatus() {
+		return marriedStatus;
+	}
+
+	public void setMarriedStatus(String marriedStatus) {
+		this.marriedStatus = marriedStatus;
+	}
+
+	public List<AttenderAllergy> getAllergies() {
+		return allergies;
+	}
+
+	public void setAllergies(List<AttenderAllergy> allergies) {
+		this.allergies = allergies;
+	}
+	
+	public void addAllergy(Allergy allergy, String notes) throws DuplicateException
+	{
+		AttenderAllergy attenderAllergy = new AttenderAllergy();
+		attenderAllergy.getId().setAllergy(allergy);
+		attenderAllergy.getId().setAttender(this);
+		attenderAllergy.setNotes(notes);
+		
+		if(allergies.contains(attenderAllergy) == false)
+		{
+			allergies.add(attenderAllergy);
+		}
+		
+		else
+		{
+			throw new DuplicateException("Cannot assign the same allergy twice.");
+		}
+	}
+	
+	public void removeAllergy(AttenderAllergy allergy)
+	{
+		allergies.remove(allergy);
+	}
+	
+	public AttenderAllergy getAllergy(Allergy allergy)
+	{
+		for(AttenderAllergy attenderAllergy : allergies)
+		{
+			if(attenderAllergy.getId().getAllergy().equals(allergy))
+			{
+				return attenderAllergy;
+			}
+		}
+		
+		return null;
+	}
+
+	public void addTalent(Talent talent, String notes) throws DuplicateException
+	{
+		AttenderTalent attenderTalent = new AttenderTalent();
+		AttenderTalentID id = attenderTalent.getId();
+		id.setAttender(this);
+		id.setTalent(talent);
+		attenderTalent.setNotes(notes);
+		
+		if(talents.contains(attenderTalent) == false)
+		{
+			talents.add(attenderTalent);
+		}
+		
+		else
+		{
+			throw new DuplicateException("Cannot assign the same talent twice.");
+		}
+	}
+	
+	public void removeTalent(AttenderTalent talent)
+	{
+		talents.remove(talent);
+	}
+	
+	public AttenderTalent getTalent(Talent talent)
+	{
+		for(AttenderTalent attenderTalent : talents)
+		{
+			if(attenderTalent.getId().getTalent().equals(talent))
+			{
+				return attenderTalent;
+			}
+		}
+		
+		return null;
+	}
+	
+	public boolean equals(Object object)
+	{
+		if(object instanceof Attender)
+		{
+			Attender that = (Attender) object;
+			
+			if(that == this)
+			{
+				return true;
+			}
+			
+			return new EqualsBuilder().append(that.id, this.id).isEquals();
+		}
+		
+		return false;
+	}
+	
+	public int hashCode()
+	{
+		return new HashCodeBuilder().append(firstname).append(lastname).append(middlename).append(id).toHashCode();
 	}
 }
