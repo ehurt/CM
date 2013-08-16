@@ -1,8 +1,8 @@
 package org.church.management.domain;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -16,7 +16,7 @@ public class AttenderAllergy implements org.church.management.interfaces.entity.
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@EmbeddedId
 	private AttenderAllergyID id;
 
 	@Column(name="notes", length=2000)

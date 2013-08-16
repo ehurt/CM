@@ -1,7 +1,8 @@
 package org.church.management.domain;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -15,9 +16,10 @@ public class AttenderTalent implements org.church.management.interfaces.entity.E
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@EmbeddedId
 	private AttenderTalentID id;
 	
+	@Column(name="notes", length=1000)
 	private String notes;
 	
 	public AttenderTalent()

@@ -4,8 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -20,38 +27,67 @@ public class Attender extends StandardFields
 {
 	private static final long serialVersionUID = 1L;
 
+	@Column(name="attending_since")
+	@Temporal(TemporalType.DATE)
 	private Date attendingSince;
+	
 	private String referredBy;
 	
 	private String photo;
+	
+	@Column(name="photo_uploaded_on")
 	private Date photoUploadedOn;
 	
 	//(Mr., Miss, Mrs., or Dr.)
+	@Column(name="prefix", length=10)
 	protected String prefix;
+	
+	@Column(name="firstname", length=50)
 	protected String firstname;
+	
+	@Column(name="middlename", length=30, nullable=true)
 	protected String middlename;
+	
+	@Column(name="lastname", length=50)
 	protected String lastname;
 	
+	@Column(name="birthday")
+	@Temporal(TemporalType.DATE)
 	protected Date birthday;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
 	protected Address address;
 	
-	protected String phone;
+	@Column(name="email", length=70)
 	protected String email;
 	
+	@Column(name="phone", length=30)
+	protected String phone;
+	
+	@Column(name="male")
 	protected boolean isMale;
+	
+	@Column(name="female")
 	protected boolean isFemale;
 	
+	@Column(name="day_of_death")
+	@Temporal(TemporalType.DATE)
 	protected Date dayOfDeath;
+	
+	@Column(name="deceased")
 	protected boolean deceased;
 	
 	//(married, single, or windowed)
+	@Column(name="married_status", length=10)
 	protected String marriedStatus;
 	
+	@Column(name="active")
 	protected boolean isActive;
 	
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="id.attender",orphanRemoval=true)
 	protected List<AttenderTalent> talents;
 
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="id.attender",orphanRemoval=true)
 	protected List<AttenderAllergy> allergies;
 	
 	public Attender()
@@ -69,6 +105,8 @@ public class Attender extends StandardFields
 		isFemale = false;
 		talents = new ArrayList<AttenderTalent>();
 		allergies = new ArrayList<AttenderAllergy>();
+		deceased = false;
+		isActive = false;
 	}
 	
 	public Attender(Class c)
