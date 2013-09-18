@@ -83,7 +83,7 @@ public class User extends StandardFields
 	@Column(name="quote", length=300)
 	private String quote;
 	
-	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,orphanRemoval=true)
+	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="id.user",orphanRemoval=true)
 	private List<UserPreference> preferences;
 	
 	public User()

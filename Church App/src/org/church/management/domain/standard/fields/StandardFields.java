@@ -1,6 +1,5 @@
 package org.church.management.domain.standard.fields;
 
-import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -14,7 +13,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.church.management.domain.User;
-import org.church.management.interfaces.entity.Entity;
 import org.church.management.interfaces.entity.VersionedEntity;
 
 /**
@@ -63,7 +61,7 @@ public class StandardFields implements VersionedEntity<Integer>
 	@OneToOne
 	protected User lastViewedBy;
 	
-	@Column(name="name", length=100)
+	@Column(name="name", length=150)
 	protected String name;
 	
 	//who owners the record
@@ -79,7 +77,7 @@ public class StandardFields implements VersionedEntity<Integer>
 	
 	@SuppressWarnings("rawtypes")
 	public StandardFields(Class entity){
-		this.entityType = entity.getSimpleName();
+		this.entityType = entity.getName();
 	}
 	
 	public Integer getId() {

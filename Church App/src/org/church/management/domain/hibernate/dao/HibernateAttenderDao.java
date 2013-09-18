@@ -2,7 +2,7 @@ package org.church.management.domain.hibernate.dao;
 
 import java.util.List;
 
-import org.church.management.domain.Original_Attender;
+import org.church.management.domain.Attender;
 import org.church.management.domain.Member;
 import org.church.management.domain.Regular;
 import org.church.management.domain.Visitor;
@@ -10,11 +10,11 @@ import org.church.management.domain.dao.AttenderDao;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-public class HibernateAttenderDao extends HibernateGenericDao<Original_Attender, Integer> implements AttenderDao
+public class HibernateAttenderDao extends HibernateGenericDao<Attender, Integer> implements AttenderDao
 {
 	public HibernateAttenderDao()
 	{
-		super(Original_Attender.class);
+		super(Attender.class);
 	}
 
 	@SuppressWarnings("unchecked")

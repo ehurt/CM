@@ -1,6 +1,6 @@
 /church_application_default.properties
 /countries.properties
 /hibernate.cfg.xml
+/log4j.properties
 /org
-/states.properties
 /test

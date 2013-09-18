@@ -2,7 +2,7 @@ package org.church.management.domain;
 
 public class VisitorChild
 {
-	//Need allegry table for childrens allegries.
+	//TODO Need allegry table for childrens allegries.
 	
 	private Visitor visitor = null;
 	

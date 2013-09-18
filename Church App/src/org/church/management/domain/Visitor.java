@@ -3,7 +3,13 @@ package org.church.management.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.InheritanceType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -17,36 +23,51 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  *
  */
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue(value="VI")
 public class Visitor extends Attender
 {
 	private static final long serialVersionUID = 1L;
 	
 	//(website, fryer, newspaper, mail, friend, radio)
+	@Column(name="hear_about_us", length=300)
 	private String hearAboutUs;
 	
 	//text field
+	@Column(name="other", length=100)
 	private String hearAboutUsOther;
 	
+	@Column(name="church_home")
 	private boolean churchHome;
 	
+	@Column(name="what_church", length=70)
 	private String whatChurch;
 	
+	@Column(name="first_time_visitor")
 	private boolean firstTimeVisitor;
 	
+	@Column(name="returning_visitor")
 	private boolean returningVisitor;
 	
+	@Column(name="information_about_church")
 	private boolean informationAboutChurch;
 	
+	@Column(name="new_to_area")
 	private boolean newToArea;
 	
+	@Column(name="like_to_visit")
 	private boolean likeToVisit;
 	
+	@Column(name="become_christian")
 	private boolean likeBecomeAChristian;
 	
+	@Column(name="prayer_request", length=500)
 	private String prayerRequest;
 	
+	@Column(name="public_prayer")
 	private boolean publicPrayer;
 	
+	@Column(name="comment", length=500)
 	private String comment;
 	
 	private List<VisitorChild> children;
@@ -58,7 +79,6 @@ public class Visitor extends Attender
 		this.publicPrayer = false;
 		this.prayerRequest = "";
 		this.marriedStatus = "";
-		this.hearAboutUs = "";
 	}
 	
 	public String getEntityType()
@@ -72,14 +92,6 @@ public class Visitor extends Attender
 
 	public void setMarriedStatus(String status) {
 		this.marriedStatus = status;
-	}
-
-	public String getHearAboutUs() {
-		return hearAboutUs;
-	}
-
-	public void setHearAboutUs(String hearAboutUs) {
-		this.hearAboutUs = hearAboutUs;
 	}
 
 	public boolean isChurchHome() {
@@ -225,5 +237,13 @@ public class Visitor extends Attender
 		
 		
 		return visitor;
+	}
+
+	public String getHearAboutUs() {
+		return hearAboutUs;
+	}
+
+	public void setHearAboutUs(String hearAboutUs) {
+		this.hearAboutUs = hearAboutUs;
 	}
 }

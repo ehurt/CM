@@ -1,6 +1,7 @@
 package org.church.management.session.listener;
 
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -9,18 +10,32 @@ import javax.servlet.http.HttpSessionEvent;
 
 import junit.framework.Assert;
 
+import org.church.management.configuration.Configuration;
+import org.church.management.domain.Note;
+import org.church.management.domain.User;
+import org.church.management.record.locking.exception.LockException;
+import org.church.management.record.locking.info.LockInfo;
+import org.church.management.record.locking.management.ObjectLockSystemManager;
+import org.church.management.session.user.SessionUser;
+import org.church.management.session.user.manager.SessionSystemManager;
+import org.church.management.session.user.manager.exception.ConcurrentLoginException;
 import org.junit.Test;
 
 public class CMHttpSessionListenerTester {
 
 	@SuppressWarnings("static-access")
 	@Test
-	public void testSession()
+	public void testSession() throws ConcurrentLoginException
 	{
 		CMHttpSessionListener listener = new CMHttpSessionListener();
 		Session session = new Session("263jfjnsksd");
 		
 		HttpSessionEvent event = new HttpSessionEvent(session);
+		
+		User user = new User();
+		user.setId(1);
+		
+		SessionSystemManager.addUser(session.getId(), user);
 		
 		listener.sessionCreated(event);
 		
@@ -29,6 +44,54 @@ public class CMHttpSessionListenerTester {
 		
 		listener.sessionDestroyed(event);
 		Assert.assertEquals(listener.getSessions().size(), 0);
+	}
+	
+	@Test
+	public void testSessionDestroy() throws ConcurrentLoginException, LockException
+	{
+		Configuration.getResourceBundle();
+		
+		User user = new User();
+		user.setId(1);
+		CMHttpSessionListener listener = new CMHttpSessionListener();
+		Session session = new Session("263jf78sksd");
+		
+		HttpSessionEvent event = new HttpSessionEvent(session);
+		
+		SessionSystemManager.addUser(session.getId(), user);
+		
+		Session session2 = new Session("382882");
+		
+		User user2 = new User();
+		user2.setId(2);
+		SessionSystemManager.addUser(session2.getId(), user2);
+		
+		Note note = new Note();
+		note.setId(2);
+		
+		ObjectLockSystemManager.lock(note, session.getId(), "Tester1");
+		
+		note = new Note();
+		note.setId(3);
+		
+		ObjectLockSystemManager.lock(note, session2.getId(), "Tester2");
+		
+		listener.sessionCreated(event);
+		
+		HttpSessionEvent event2 = new HttpSessionEvent(session2);
+		
+		listener.sessionCreated(event2);
+		
+		listener.sessionDestroyed(event);
+		
+		List<SessionUser> users = SessionSystemManager.getListOfCurrentUsers();
+		
+		Assert.assertEquals(users.size(), 1);
+		
+		List<LockInfo> locks = ObjectLockSystemManager.listOfLocks(session.getId());
+		
+		Assert.assertEquals(locks.size(), 0);
+		
 	}
 	
 	public class Session implements HttpSession

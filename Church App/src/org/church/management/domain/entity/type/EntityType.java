@@ -43,11 +43,14 @@ public class EntityType {
 	@Column(name="has_notes")
 	private boolean hasNotes;
 
-	@Column(name="hasAttachedFiles")
+	@Column(name="has_Attached_Files")
 	private boolean hasAttachedFiles;
 	
-	@Column(name="hasActivaties")
+	@Column(name="has_Activaties")
 	private boolean hasActivaties;
+	
+	@Column(name="has_Attendance")
+	private boolean hasAttendance;
 	
 	public EntityType(Class c, boolean auditable, int version, int numberOfCustomFields){
 		this.entityTypeFullClassName = c.getName();

@@ -73,4 +73,9 @@ public class BugReportingAppender extends AppenderSkeleton
 			
 		}
 	}
+	
+	private void sendErrorReport(Level level, ThrowableInformation info)
+	{
+		String version;
+	}
 }

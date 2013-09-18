@@ -4,6 +4,7 @@ package org.church.management.managed.application.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.servlet.http.HttpSession;
@@ -38,6 +39,12 @@ public class SystemBean
 	public SystemBean()
 	{
 		
+	}
+	
+	@PostConstruct
+	public void init()
+	{
+		//TODO get the bean in here which allow connection to all the users.
 	}
 
 	public static synchronized void addErrorCount() 
@@ -92,14 +99,15 @@ public class SystemBean
 		return systemError;
 	}
 
-	public void invalidate(String sessionId)
+	public void invalidate(String sessionId, String message)
 	{
-		HttpSession session = CMHttpSessionListener.getSessions().get(sessionId);
+		HttpSession session = CMHttpSessionListener.getSession(sessionId);
 		
 		if(session != null)
 		{
 			try
 			{
+				//invoke an event first to give them a message
 				session.invalidate();
 			}
 			catch(Exception e){}
@@ -108,6 +116,6 @@ public class SystemBean
 	
 	public List<HttpSession> getAllCurrentSessions()
 	{
-		return new ArrayList<HttpSession>(CMHttpSessionListener.getSessions().values());
+		return new ArrayList<HttpSession>(CMHttpSessionListener.getSessions());
 	}
 }

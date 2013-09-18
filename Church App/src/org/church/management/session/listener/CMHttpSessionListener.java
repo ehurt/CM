@@ -32,8 +32,18 @@ public class CMHttpSessionListener implements HttpSessionListener
 		sessions.put(e.getSession().getId(), e.getSession());
 		HttpSession session = e.getSession();
 		
-		int timeout = Configuration.getInt("sessionTimeout", 60)*60;
-		session.setMaxInactiveInterval(timeout);
+		int sessionTimeout = Configuration.getInt("sessionTimeout", 60);
+		
+		if(sessionTimeout < 0)
+		{
+			session.setMaxInactiveInterval(-1);
+		}
+		
+		else
+		{
+			int timeout = sessionTimeout*60;
+			session.setMaxInactiveInterval(timeout);
+		}
 	}
 
 	public void sessionDestroyed(HttpSessionEvent e) 

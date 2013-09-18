@@ -85,6 +85,6 @@ public class Ethnicity implements org.church.management.interfaces.entity.Entity
 
 	public int hashCode()
 	{
-		return new HashCodeBuilder().append(name).toHashCode();
+		return new HashCodeBuilder().append(name).append(getNameLc()).toHashCode();
 	}
 }

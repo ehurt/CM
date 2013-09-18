@@ -2,7 +2,6 @@ package org.church.management.domain.hibernate.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import org.church.management.domain.generic.dao.GenericDao;
 import org.church.management.interfaces.entity.Entity;
@@ -34,6 +33,11 @@ public class HibernateGenericDao<T extends Entity<?>, I> implements GenericDao<T
 		if(debugging)
 		{
 			if(session == null)
+			{
+				session = sessionFactory.openSession();
+			}
+			
+			else if(session.isOpen() == false)
 			{
 				session = sessionFactory.openSession();
 			}

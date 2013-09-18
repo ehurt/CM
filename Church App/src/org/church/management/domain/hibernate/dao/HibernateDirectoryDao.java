@@ -2,7 +2,7 @@ package org.church.management.domain.hibernate.dao;
 
 import java.util.List;
 
-import org.church.management.domain.ApplicationFile;
+import org.church.management.domain.Attachment;
 import org.church.management.domain.Directory;
 import org.church.management.domain.dao.DirectoryDao;
 import org.hibernate.Criteria;
@@ -16,12 +16,12 @@ public class HibernateDirectoryDao extends HibernateGenericDao<Directory, Intege
 		super(Directory.class);
 	}
 	
-	public List<ApplicationFile> getFilesFromDirectory(Directory directory)
+	public List<Attachment> getFilesFromDirectory(Directory directory)
 	{
-		List<ApplicationFile> files = null;
+		List<Attachment> files = null;
 
 		Session session = getCurrentSession();
-		Criteria criteria = session.createCriteria(ApplicationFile.class);
+		Criteria criteria = session.createCriteria(Attachment.class);
 		criteria.add(Restrictions.eq("directory", directory));
 		files = criteria.list();
 		

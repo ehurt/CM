@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -17,9 +18,11 @@ public class AttenderAllergyID implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="attender_id")
 	private Attender attender;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="allergy_id")
 	private Allergy allergy;
 
 	public AttenderAllergyID()

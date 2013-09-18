@@ -25,6 +25,9 @@ public class Country implements org.church.management.interfaces.entity.Entity<I
 	
 	@Column(name="abbrevation", length=6, unique=true)
 	private String abbrevation;
+	
+	@Column(name="has_states")
+	private boolean hasStates;
 
 	public Country()
 	{
@@ -58,6 +61,14 @@ public class Country implements org.church.management.interfaces.entity.Entity<I
 		this.abbrevation = abbrevation;
 	}
 	
+	public boolean isHasStates() {
+		return hasStates;
+	}
+
+	public void setHasStates(boolean hasStates) {
+		this.hasStates = hasStates;
+	}
+
 	public int hashCode()
 	{
 		return new HashCodeBuilder().append(name).append(abbrevation).toHashCode();

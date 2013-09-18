@@ -2,6 +2,16 @@ package org.church.management.domain;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 /**
  * 
  * @author Trae
@@ -10,22 +20,33 @@ import java.util.Date;
  * from the attender.
  */
 
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue(value="ME")
 public class Member extends Attender
 {
 	private static final long serialVersionUID = 1L;
 	
+	@Column(name="member_since")
+	@Temporal(TemporalType.DATE)
 	private Date memberSince;
 	
-	private boolean isDisfellowshiped = false;
+	@Column(name="disfellowshiped")
+	private boolean isDisfellowshiped;
 	
+	@Column(name="employeer", length=50)
 	private String employer = "";
+	
+	@Column(name="occupation", length=50)
 	private String occupation = "";
 	
+	@Column(name="alternative_phone", length=30)
 	private String altPhone = "";
 	
 	public Member()
 	{
 		super(Member.class);
+		this.isDisfellowshiped = false;
 	}
 	
 	public String getEntityType()

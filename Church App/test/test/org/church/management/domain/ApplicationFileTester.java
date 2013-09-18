@@ -4,7 +4,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
-import org.church.management.domain.ApplicationFile;
+import org.church.management.domain.Attachment;
 import org.church.management.domain.Directory;
 import org.church.management.domain.User;
 import org.church.management.domain.exceptions.DAOConstraintViolationException;
@@ -16,6 +16,7 @@ import org.junit.Test;
 
 public class ApplicationFileTester
 {
+	/*
 	@Test
 	public void testSave() throws DAOException, DAOConstraintViolationException, DAONoObjectFoundException, DAOStaleStateException, LockException
 	{
@@ -29,7 +30,7 @@ public class ApplicationFileTester
 		
 		directory.save();
 		
-		ApplicationFile file = new ApplicationFile();
+		Attachment file = new Attachment();
 		file.setMineType("image/png");
 		file.setEntity(User.class.getSimpleName());
 		file.setObjectId("2");
@@ -57,7 +58,7 @@ public class ApplicationFileTester
 		
 		directory.save();
 		
-		ApplicationFile file = new ApplicationFile();
+		Attachment file = new Attachment();
 		file.setMineType("image/png");
 		file.setEntity(User.class.getSimpleName());
 		file.setObjectId("2");
@@ -96,7 +97,7 @@ public class ApplicationFileTester
 		
 		directory.save();
 		
-		ApplicationFile file = new ApplicationFile();
+		Attachment file = new Attachment();
 		file.setMineType("image/png");
 		file.setEntity(User.class.getSimpleName());
 		file.setObjectId("2");
@@ -108,7 +109,7 @@ public class ApplicationFileTester
 		
 		file.save();
 		
-		file = new ApplicationFile();
+		file = new Attachment();
 		file.setDescription("Testing.");
 		file.setMineType("image/jpg");
 		file.setEntity(User.class.getSimpleName());
@@ -120,13 +121,13 @@ public class ApplicationFileTester
 		
 		file.save();
 		
-		List<ApplicationFile> files = file.getFilesByReference(user);
+		List<Attachment> files = file.getFilesByReference(user);
 		
 		Assert.assertEquals(files.size(), 2);
 		
-		for(ApplicationFile afile : files)
+		for(Attachment afile : files)
 			System.out.println(afile.getName());
 		
 		directory.delete();
-	}
+	}*/
 }

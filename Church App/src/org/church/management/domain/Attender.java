@@ -1,28 +1,31 @@
 package org.church.management.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.church.management.domain.keys.AttenderTalentID;
 import org.church.management.domain.standard.fields.StandardFields;
 import org.church.management.exceptions.DuplicateException;
 
 @SuppressWarnings("rawtypes")
 @Entity
-@Table(name="attenders")
+@Table(name="attender")
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="attender_type", discriminatorType=DiscriminatorType.STRING)
 public class Attender extends StandardFields
 {
 	private static final long serialVersionUID = 1L;
@@ -31,9 +34,14 @@ public class Attender extends StandardFields
 	@Temporal(TemporalType.DATE)
 	private Date attendingSince;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Ethnicity ethnicity;
+	
+	@Column(name="referred_by", length=100)
 	private String referredBy;
 	
-	private String photo;
+	@OneToOne(fetch=FetchType.LAZY, optional=true)
+	private Attachment photo;
 	
 	@Column(name="photo_uploaded_on")
 	private Date photoUploadedOn;
@@ -84,16 +92,19 @@ public class Attender extends StandardFields
 	@Column(name="active")
 	protected boolean isActive;
 	
+	/*
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="id.attender",orphanRemoval=true)
 	protected List<AttenderTalent> talents;
 
 	@OneToMany(cascade=CascadeType.ALL,fetch=FetchType.LAZY,mappedBy="id.attender",orphanRemoval=true)
 	protected List<AttenderAllergy> allergies;
 	
+	*/
+	
 	public Attender()
 	{
 		super(Attender.class);
-		photo = "";
+		photo = null;
 		prefix = "";
 		firstname = "";
 		middlename = "";
@@ -103,8 +114,8 @@ public class Attender extends StandardFields
 		email = "";
 		isMale = false;
 		isFemale = false;
-		talents = new ArrayList<AttenderTalent>();
-		allergies = new ArrayList<AttenderAllergy>();
+		//talents = new ArrayList<AttenderTalent>();
+		//allergies = new ArrayList<AttenderAllergy>();
 		deceased = false;
 		isActive = false;
 	}
@@ -112,7 +123,7 @@ public class Attender extends StandardFields
 	public Attender(Class c)
 	{
 		super(c);
-		photo = "";
+		photo = null;
 		prefix = "";
 		firstname = "";
 		middlename = "";
@@ -122,8 +133,8 @@ public class Attender extends StandardFields
 		email = "";
 		isMale = false;
 		isFemale = false;
-		talents = new ArrayList<AttenderTalent>();
-		allergies = new ArrayList<AttenderAllergy>();
+		//talents = new ArrayList<AttenderTalent>();
+		//allergies = new ArrayList<AttenderAllergy>();
 	}
 
 	public String getPrefix() {
@@ -202,11 +213,11 @@ public class Attender extends StandardFields
 		this.isFemale = isFemale;
 	}
 
-	public String getPhoto() {
+	public Attachment getPhoto() {
 		return photo;
 	}
 
-	public void setPhoto(String photo) {
+	public void setPhoto(Attachment photo) {
 		this.photo = photo;
 	}
 	
@@ -266,13 +277,14 @@ public class Attender extends StandardFields
 		this.birthday = birthday;
 	}
 	
+	/*
 	public List<AttenderTalent> getTalents() {
 		return talents;
 	}
 
 	public void setTalents(List<AttenderTalent> talents) {
 		this.talents = talents;
-	}
+	}*/
 	
 	public String getMarriedStatus() {
 		return marriedStatus;
@@ -282,6 +294,7 @@ public class Attender extends StandardFields
 		this.marriedStatus = marriedStatus;
 	}
 
+	/*
 	public List<AttenderAllergy> getAllergies() {
 		return allergies;
 	}
@@ -361,8 +374,16 @@ public class Attender extends StandardFields
 		}
 		
 		return null;
-	}
+	}*/
 	
+	public Ethnicity getEthnicity() {
+		return ethnicity;
+	}
+
+	public void setEthnicity(Ethnicity ethnicity) {
+		this.ethnicity = ethnicity;
+	}
+
 	public boolean equals(Object object)
 	{
 		if(object instanceof Attender)

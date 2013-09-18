@@ -2,26 +2,26 @@ package org.church.management.domain.hibernate.dao;
 
 import java.util.List;
 
-import org.church.management.domain.ApplicationFile;
+import org.church.management.domain.Attachment;
 import org.church.management.domain.dao.ApplicationFileDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-public class HibernateApplicationFileDao extends HibernateGenericDao<ApplicationFile, Integer> implements ApplicationFileDao
+public class HibernateApplicationFileDao extends HibernateGenericDao<Attachment, Integer> implements ApplicationFileDao
 {
 	public HibernateApplicationFileDao()
 	{
-		super(ApplicationFile.class);
+		super(Attachment.class);
 	}
 	
-	public List<ApplicationFile> getFilesByReference(String table, String id)
+	public List<Attachment> getFilesByReference(String table, String id)
 	{
-		List<ApplicationFile> files = null;
+		List<Attachment> files = null;
 		Session session = getCurrentSession();
 		
-		Criteria criteria = session.createCriteria(ApplicationFile.class);
+		Criteria criteria = session.createCriteria(Attachment.class);
 		criteria.add(Restrictions.eq("entity", table));
 		criteria.add(Restrictions.eq("objectId", id));
 		files = criteria.list();
