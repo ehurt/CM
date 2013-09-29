@@ -52,15 +52,6 @@ public class StandardFields implements VersionedEntity<Integer>
 	@OneToOne
 	protected User lastModifiedBy;
 	
-	//the last time the record was looked at
-	@Column(name="last_viewed_on")
-	@Temporal(TemporalType.TIMESTAMP)
-	protected Calendar lastViewedOn;
-	
-	//who looked at the last object
-	@OneToOne
-	protected User lastViewedBy;
-	
 	@Column(name="name", length=150)
 	protected String name;
 	
@@ -128,22 +119,6 @@ public class StandardFields implements VersionedEntity<Integer>
 		this.lastModifiedBy = lastModifiedBy;
 	}
 
-	public User getLastViewedBy() {
-		return lastViewedBy;
-	}
-
-	public void setLastViewedBy(User lastViewedBy) {
-		this.lastViewedBy = lastViewedBy;
-	}
-
-	public Calendar getLastViewedOn() {
-		return lastViewedOn;
-	}
-
-	public void setLastViewedOn(Calendar lastViewedOn) {
-		this.lastViewedOn = lastViewedOn;
-	}
-
 	public User getOwner() {
 		return owner;
 	}
@@ -158,15 +133,5 @@ public class StandardFields implements VersionedEntity<Integer>
 
 	public int getEntityTypeVersion() {
 		return entityTypeVersion;
-	}
-
-	@Transient
-	public String getEntityType() {
-		return entityType;
-	}
-	
-	@Transient
-	public void setEntityType(String entityType){
-		this.entityType = entityType;
 	}
 }

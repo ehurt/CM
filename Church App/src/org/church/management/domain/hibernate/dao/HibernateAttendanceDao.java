@@ -23,7 +23,7 @@ public class HibernateAttendanceDao extends HibernateGenericDao<Attendance, Inte
 	public List<Attendance> getAttendance(Entity e) 
 	{
 		String objectId = e.getId().toString();
-		String entity = e.getEntityType();
+		String entity = e.getClass().getSimpleName();
 		
 		Session session = this.getCurrentSession();
 		
