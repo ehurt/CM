@@ -36,11 +36,6 @@ public class UserPreference implements org.church.management.interfaces.entity.E
 		this.value = value;
 	}
 
-	public String getEntityType()
-	{
-		return UserPreference.class.getName();
-	}
-
 	public UserPreferenceID getId() 
 	{
 		return id;

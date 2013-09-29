@@ -96,10 +96,4 @@ public class State implements org.church.management.interfaces.entity.Entity<Int
 		
 		return false;
 	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return State.class.getName();
-	}
 }

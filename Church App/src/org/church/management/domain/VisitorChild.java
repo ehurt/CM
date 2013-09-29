@@ -18,9 +18,4 @@ public class VisitorChild
 	public void setVisitor(Visitor visitor) {
 		this.visitor = visitor;
 	}
-
-	public String getEntityType() 
-	{
-		return VisitorChild.class.getName();
-	}
 }

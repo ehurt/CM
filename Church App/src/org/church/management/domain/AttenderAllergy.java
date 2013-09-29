@@ -45,12 +45,6 @@ public class AttenderAllergy implements org.church.management.interfaces.entity.
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return AttenderAllergy.class.getName();
-	}
 	
 	public boolean equals(Object object)
 	{

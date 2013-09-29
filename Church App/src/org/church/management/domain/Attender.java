@@ -69,8 +69,11 @@ public class Attender extends StandardFields
 	@Column(name="email", length=70)
 	protected String email;
 	
-	@Column(name="phone", length=30)
-	protected String phone;
+	@Column(name="cell", length=30)
+	protected String cell;
+	
+	@Column(name="home", length=30)
+	protected String home;
 	
 	@Column(name="male")
 	protected boolean isMale;
@@ -110,7 +113,8 @@ public class Attender extends StandardFields
 		middlename = "";
 		lastname = "";
 		address = null;
-		phone = "";
+		cell = "";
+		home = "";
 		email = "";
 		isMale = false;
 		isFemale = false;
@@ -129,7 +133,8 @@ public class Attender extends StandardFields
 		middlename = "";
 		lastname = "";
 		address = null;
-		phone = "";
+		cell = "";
+		home = "";
 		email = "";
 		isMale = false;
 		isFemale = false;
@@ -181,12 +186,20 @@ public class Attender extends StandardFields
 		this.address = address;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getCell() {
+		return cell;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setCell(String phone) {
+		this.cell = phone;
+	}
+
+	public String getHome() {
+		return home;
+	}
+
+	public void setHome(String home) {
+		this.home = home;
 	}
 
 	public String getEmail() {

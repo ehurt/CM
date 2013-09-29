@@ -48,11 +48,6 @@ public class Task implements org.church.management.interfaces.entity.Entity<Inte
 		this.id = id;
 	}
 
-	public String getEntityType() 
-	{
-		return Task.class.getName();
-	}
-
 	public boolean isPrivate() {
 		return isPrivate;
 	}

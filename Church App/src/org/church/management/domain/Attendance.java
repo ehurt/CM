@@ -51,11 +51,6 @@ public class Attendance implements org.church.management.interfaces.entity.Entit
 		this.id = id;
 	}
 
-	public String getEntityType() 
-	{
-		return Attendance.class.getName();
-	}
-
 	public Calendar getAttended() {
 		return attended;
 	}

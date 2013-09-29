@@ -196,12 +196,6 @@ public class ChurchInfo implements org.church.management.interfaces.entity.Entit
 	{
 		this.pastor = pastor;
 	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return ChurchInfo.class.getName();
-	}
 	
 	public boolean equals(Object object)
 	{

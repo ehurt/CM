@@ -120,10 +120,4 @@ public class ValidHostAddress implements org.church.management.interfaces.entity
 		
 		return false;
 	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return ValidHostAddress.class.getName();
-	}
 }

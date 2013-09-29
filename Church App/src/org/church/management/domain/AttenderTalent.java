@@ -47,12 +47,6 @@ public class AttenderTalent implements org.church.management.interfaces.entity.E
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-
-	@Override
-	public String getEntityType()
-	{
-		return AttenderTalent.class.getName();
-	}
 	
 	public boolean equals(Object object)
 	{

@@ -80,11 +80,6 @@ public class Visitor extends Attender
 		this.prayerRequest = "";
 		this.marriedStatus = "";
 	}
-	
-	public String getEntityType()
-	{
-		return Visitor.class.getName();
-	}
 
 	public String getMarriedStatus() {
 		return marriedStatus;

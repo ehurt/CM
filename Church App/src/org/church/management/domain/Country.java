@@ -107,11 +107,4 @@ public class Country implements org.church.management.interfaces.entity.Entity<I
 		
 		return false;
 	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return Country.class.getName();
-	}
-
 }

@@ -45,11 +45,6 @@ public class Allergy implements org.church.management.interfaces.entity.Entity<I
 		this.id = id;	
 	}
 
-	@Override
-	public String getEntityType() 
-	{
-		return Allergy.class.getName();
-	}
 
 	public String getName() {
 		return name;

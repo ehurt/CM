@@ -116,11 +116,6 @@ public class Note implements org.church.management.interfaces.entity.Entity<Inte
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-
-	public String getEntityType() 
-	{
-		return Note.class.getName();
-	}
 	
 	public int hashCode()
 	{

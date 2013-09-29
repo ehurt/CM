@@ -49,11 +49,6 @@ public class Talent implements org.church.management.interfaces.entity.Entity<In
 		this.id = id;
 	}
 
-	public String getEntityType() 
-	{
-		return Talent.class.getName();
-	}
-
 	public String getName() {
 		return name;
 	}

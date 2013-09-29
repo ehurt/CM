@@ -39,11 +39,6 @@ public class Ethnicity implements org.church.management.interfaces.entity.Entity
 	{
 		this.id = id;
 	}
-
-	public String getEntityType() 
-	{
-		return Ethnicity.class.getName();
-	}
 	
 	public String getName()
 	{

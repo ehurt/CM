@@ -103,12 +103,6 @@ public class Address implements org.church.management.interfaces.entity.Entity<I
 	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
-	
-	@Override
-	public String getEntityType() 
-	{
-		return Address.class.getName();
-	}
 
 	public String getApartmentNumber() {
 		return apartmentNumber;

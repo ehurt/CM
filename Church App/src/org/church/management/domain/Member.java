@@ -48,11 +48,6 @@ public class Member extends Attender
 		super(Member.class);
 		this.isDisfellowshiped = false;
 	}
-	
-	public String getEntityType()
-	{
-		return Member.class.getName();
-	}
 
 	public Date getMemberSince() {
 		return memberSince;

@@ -99,10 +99,4 @@ public class Preference implements org.church.management.interfaces.entity.Entit
 		
 		return preference;
 	}
-
-	@Override
-	public String getEntityType() 
-	{
-		return Preference.class.getName();
-	}
 }
